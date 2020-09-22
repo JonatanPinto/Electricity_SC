@@ -7,6 +7,7 @@ public class Device {
 	private DeviceType deviceType;
 	private String tradeMark;
 	private String model;
+	private String name;
 	private EnergyScale energyScale;
 	private double ConsumptionOff;
 	private double ConsumptionStandBy;
@@ -125,6 +126,24 @@ public class Device {
 		this.useTime = useTime;
 	}
 
+	// Constructor con el atributo name
+	public Device(int id, boolean stade, DeviceType deviceType,
+			String tradeMark, String model, String name,
+			EnergyScale energyScale, double consumptionOff,
+			double consumptionStandBy, double consumptionOn, int useTime) {
+		this.id = id;
+		this.stade = stade;
+		this.deviceType = deviceType;
+		this.tradeMark = tradeMark;
+		this.model = model;
+		this.name = name;
+		this.energyScale = energyScale;
+		ConsumptionOff = consumptionOff;
+		ConsumptionStandBy = consumptionStandBy;
+		ConsumptionOn = consumptionOn;
+		this.useTime = useTime;
+	}
+
 	public void use(long hours) {
 		// Calcular watts consumidos.
 		// this.wattsConsumidos += hours * ConsumptionOn;
@@ -158,6 +177,14 @@ public class Device {
 
 	public String getModel() {
 		return model;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public EnergyScale getEnergyScale() {
