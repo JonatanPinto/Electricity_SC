@@ -12,7 +12,6 @@ public class Device {
 	private double ConsumptionStandBy;
 	private double ConsumptionOn;
 	private int useTime;
-	private double wattsConsumidos;
 
 	// - <-------- UseTime -------> +
 

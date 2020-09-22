@@ -11,6 +11,7 @@ import utilities.numbers.NumberGenerator;
 public class Test {
 
 	private ArrayList<Device> devices;
+	@SuppressWarnings("unused")
 	private ArrayList<EnergyBill> energyBills;
 	
 	public Test() {
