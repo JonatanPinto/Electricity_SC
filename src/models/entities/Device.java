@@ -1,6 +1,5 @@
 package models.entities;
 
-
 public class Device {
 
 	private int id;
@@ -13,10 +12,10 @@ public class Device {
 	private double ConsumptionStandBy;
 	private double ConsumptionOn;
 	private int useTime;
-	
-	
-	//            - <-------- UseTime -------> +
-	
+	private double wattsConsumidos;
+
+	// - <-------- UseTime -------> +
+
 	/**
 	 * 
 	 * @param id
@@ -26,9 +25,11 @@ public class Device {
 	 * @param consumptionOff
 	 * @param consumptionStandBy
 	 * @param consumptionOn
-	 * @param useTime   sistema de medición en horas
+	 * @param useTime
+	 *            sistema de medición en horas
 	 */
-	public Device(int id, boolean stade, DeviceType deviceType, String tradeMark, String model, double consumptionOff,
+	public Device(int id, boolean stade, DeviceType deviceType,
+			String tradeMark, String model, double consumptionOff,
 			double consumptionStandBy, double consumptionOn, int useTime) {
 		super();
 		this.stade = stade;
@@ -42,7 +43,7 @@ public class Device {
 		ConsumptionOn = consumptionOn;
 		this.useTime = useTime;
 	}
-	
+
 	/**
 	 * 
 	 * @param id
@@ -54,8 +55,9 @@ public class Device {
 	 * @param consumptionOn
 	 * @param useTime
 	 */
-	public Device(int id, boolean stade, DeviceType deviceType, String tradeMark, String model, EnergyScale energyScale, double consumptionOff,
-			double consumptionOn, int useTime) {
+	public Device(int id, boolean stade, DeviceType deviceType,
+			String tradeMark, String model, EnergyScale energyScale,
+			double consumptionOff, double consumptionOn, int useTime) {
 		super();
 		this.stade = stade;
 		this.id = id;
@@ -68,7 +70,7 @@ public class Device {
 		ConsumptionOn = consumptionOn;
 		this.useTime = useTime;
 	}
-	
+
 	/**
 	 * 
 	 * @param id
@@ -79,8 +81,9 @@ public class Device {
 	 * @param consumptionOn
 	 * @param useTime
 	 */
-	public Device(int id, boolean stade, DeviceType deviceType, String tradeMark, String model, EnergyScale energyScale, double consumptionOn,
-			int useTime) {
+	public Device(int id, boolean stade, DeviceType deviceType,
+			String tradeMark, String model, EnergyScale energyScale,
+			double consumptionOn, int useTime) {
 		super();
 		this.stade = stade;
 		this.id = id;
@@ -93,7 +96,7 @@ public class Device {
 		ConsumptionOn = consumptionOn;
 		this.useTime = useTime;
 	}
-	
+
 	/**
 	 * 
 	 * @param id
@@ -106,8 +109,10 @@ public class Device {
 	 * @param consumptionOn
 	 * @param useTime
 	 */
-	public Device(int id, boolean stade, DeviceType deviceType, String tradeMark, String model, EnergyScale energyScale, double consumptionOff,
-			double consumptionStandBy, double consumptionOn, int useTime) {
+	public Device(int id, boolean stade, DeviceType deviceType,
+			String tradeMark, String model, EnergyScale energyScale,
+			double consumptionOff, double consumptionStandBy,
+			double consumptionOn, int useTime) {
 		super();
 		this.stade = stade;
 		this.id = id;
@@ -120,15 +125,22 @@ public class Device {
 		ConsumptionOn = consumptionOn;
 		this.useTime = useTime;
 	}
-	
-	
-	//--------------------   Setters and Getters   --------------------
-	
-	
+
+	public void use(long hours) {
+		// Calcular watts consumidos.
+		// this.wattsConsumidos += hours * ConsumptionOn;
+
+		// Calcular tiempo de uso.
+		// tiempoDeUso += hours;
+		this.stade = true;
+	}
+
+	// -------------------- Setters and Getters --------------------
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public boolean isStade() {
 		return stade;
 	}
@@ -171,10 +183,11 @@ public class Device {
 
 	@Override
 	public String toString() {
-		return "Device [id=" + id + ", deviceType=" + deviceType + ", tradeMark=" + tradeMark + ", model=" + model
-				+ ", energyScale=" + energyScale + ", ConsumptionOff=" + ConsumptionOff + ", ConsumptionStandBy="
-				+ ConsumptionStandBy + ", ConsumptionOn=" + ConsumptionOn + "]";
-	}	
-	
-	
+		return "Device [id=" + id + ", deviceType=" + deviceType
+				+ ", tradeMark=" + tradeMark + ", model=" + model
+				+ ", energyScale=" + energyScale + ", ConsumptionOff="
+				+ ConsumptionOff + ", ConsumptionStandBy=" + ConsumptionStandBy
+				+ ", ConsumptionOn=" + ConsumptionOn + "]";
+	}
+
 }
