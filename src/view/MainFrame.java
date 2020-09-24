@@ -12,6 +12,9 @@ import view.properties.ConstantGUI;
 
 import java.awt.Color;
 import java.util.List;
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
+import java.awt.Font;
 
 public class MainFrame extends JFrame {
 
@@ -30,8 +33,20 @@ public class MainFrame extends JFrame {
 	}
 
 	private void initComponents() {
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		tabbedPane.setBackground(Color.WHITE);
+		tabbedPane.setOpaque(true);
+		tabbedPane.setFocusable(false);
+		getContentPane().add(tabbedPane, BorderLayout.CENTER);
+
 		this.devicesContainer = new DevicesContainer(controller);
-		getContentPane().add(devicesContainer, BorderLayout.CENTER);
+		devicesContainer.setBackground(Color.WHITE);
+		devicesContainer.setOpaque(true);
+		tabbedPane.addTab("Simulador", null, devicesContainer, null);
+
+		JPanel panel = new JPanel();
+		tabbedPane.addTab("Catálogo", null, panel, null);
 	}
 
 	private void initProperties() {

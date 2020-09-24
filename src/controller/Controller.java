@@ -23,7 +23,7 @@ public class Controller implements ActionListener {
 	private List<Device> devices;
 	private MainFrame mainFrame;
 	private double kiloWattCost = 572.1319;
-	private int simulationSpeed = 500;
+	private int simulationSpeed = 1000;
 
 	public Controller() {
 		this.mainFrame = new MainFrame(this);
@@ -111,7 +111,8 @@ public class Controller implements ActionListener {
 				public void run() {
 					mainFrame.setEnabled(false);
 					new Simulator(controller, Season.WINTER, devices,
-							simulationDays, kiloWattCost).start();
+							simulationDays, kiloWattCost, simulationSpeed)
+							.start();
 				}
 			}).start();
 		} else {
