@@ -8,6 +8,7 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 
+import view.components.ShutdownButton;
 import view.properties.ConstantGUI;
 
 import java.awt.GridLayout;
@@ -22,17 +23,19 @@ import models.entities.DeviceType;
 import models.entities.EnergyScale;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JProgressBar;
-import javax.swing.JToggleButton;
 
-public class DeviceRowPanel extends JPanel implements MouseListener {
+public class DeviceRowPanel extends JPanel implements ActionListener,
+		MouseListener {
 
 	private static final long serialVersionUID = -5578655020070513211L;
 	private ActionListener actionListener;
@@ -47,10 +50,10 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 	private JLabel lblEnergyScale;
 	private JLabel lblDeviceType;
 	private JLabel lblSeparator1;
-	private JProgressBar progressBar;
-	private JToggleButton tglbtnOn;
+	private JProgressBar progressBarWatts;
+	private ShutdownButton btnShutdown;
 	private JLabel lblTime;
-	private JPanel panel_1;
+	private JPanel panelWatts;
 
 	public DeviceRowPanel() {
 		initProperties();
@@ -63,6 +66,14 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 		initProperties();
 		initComponents();
 		setDevice(index, device);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object src = e.getSource();
+		if (src instanceof ShutdownButton) {
+
+		}
 	}
 
 	public Device getDevice() {
@@ -151,22 +162,25 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 		});
 		panelControls.setLayout(new BoxLayout(panelControls, BoxLayout.X_AXIS));
 
-		panel_1 = new JPanel();
-		panel_1.setOpaque(false);
-		panel_1.setBorder(new EmptyBorder(0, 5, 0, 5));
-		panelControls.add(panel_1);
+		panelWatts = new JPanel();
+		panelWatts.setOpaque(false);
+		panelWatts.setBorder(new EmptyBorder(0, 5, 0, 5));
+		panelControls.add(panelWatts);
 
-		progressBar = new JProgressBar();
-		progressBar.setStringPainted(true);
-		panel_1.add(progressBar);
+		progressBarWatts = new JProgressBar();
+		progressBarWatts.setStringPainted(true);
+		progressBarWatts.setBorderPainted(false);
+		progressBarWatts.setBorder(new EmptyBorder(0, 0, 0, 0));
+		progressBarWatts.setForeground(ConstantGUI.COLOR_PRIMARY);
+		panelWatts.add(progressBarWatts);
 
 		lblTime = new JLabel();
 		lblTime.setPreferredSize(new Dimension(100, 14));
 		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelControls.add(lblTime);
 
-		tglbtnOn = new JToggleButton("Off");
-		panelControls.add(tglbtnOn);
+		btnShutdown = new ShutdownButton();
+		panelControls.add(btnShutdown);
 		panelControls.add(btnEdit);
 
 		btnRemove = new JButton();
@@ -230,48 +244,58 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 			lblName.setText(device.getName());
 			lblTradeMark.setText(device.getTradeMark());
 			lblModel.setText(device.getModel());
-			EnergyScale energyScale = device.getEnergyScale();
-			if (energyScale != null) {
-				lblEnergyScale.setVisible(true);
-				lblEnergyScale.setText(energyScale.getName());
-				lblEnergyScale.setToolTipText("Escala de energia ("
-						+ energyScale + ")");
-			}
-			DeviceType deviceType = device.getDeviceType();
-			if (deviceType != null) {
-				lblDeviceType.setVisible(true);
-				lblDeviceType.setToolTipText("Tipo de dispositivo ("
-						+ deviceType.getName() + ")");
-				Icon deviceTypeIcon = null;
-				switch (deviceType) {
-				case ELECTRONIC:
-					deviceTypeIcon = ConstantGUI.ICON_FLASH_16;
-					break;
-				case HEAT_PRODUCER:
-					deviceTypeIcon = ConstantGUI.ICON_FLAME_16;
-					break;
-				case ILUMINATION:
-					deviceTypeIcon = ConstantGUI.ICON_LIGHTBULB_16;
-					break;
-				case RUN_BY_MOTOR:
-					deviceTypeIcon = ConstantGUI.ICON_GEAR_16;
-					break;
-				}
-				lblDeviceType.setIcon(deviceTypeIcon);
-			}
 			lblTime.setText(device.getUseTime() + " horas");
+			setEnergyScale(device.getEnergyScale());
+			setDeviceType(device.getDeviceType());
+			btnShutdown.setDevice(device);
+			btnShutdown.addActionListener(this);
+			btnShutdown.setTurnedOn(device.getState());
 		}
 	}
 
-	public void setWattsValue(double watts) {
-		int percentage = Integer.parseInt("" + (int) watts);
-		progressBar.setValue(percentage);
-		progressBar.setString(percentage + "% (" + device.getWattsConsumed()
-				+ "W)");
+	private void setDeviceType(DeviceType deviceType) {
+		if (deviceType != null) {
+			lblDeviceType.setVisible(true);
+			lblDeviceType.setToolTipText("Tipo de dispositivo ("
+					+ deviceType.getName() + ")");
+			Icon deviceTypeIcon = null;
+			switch (deviceType) {
+			case ELECTRONIC:
+				deviceTypeIcon = ConstantGUI.ICON_FLASH_16;
+				break;
+			case HEAT_PRODUCER:
+				deviceTypeIcon = ConstantGUI.ICON_FLAME_16;
+				break;
+			case ILUMINATION:
+				deviceTypeIcon = ConstantGUI.ICON_LIGHTBULB_16;
+				break;
+			case RUN_BY_MOTOR:
+				deviceTypeIcon = ConstantGUI.ICON_GEAR_16;
+				break;
+			}
+			lblDeviceType.setIcon(deviceTypeIcon);
+		}
 	}
 
-	public void updateDevice(Device device2) {
+	@Override
+	public void setEnabled(boolean enabled) {
+		btnShutdown.setEnabled(enabled);
+	}
 
+	private void setEnergyScale(EnergyScale energyScale) {
+		if (energyScale != null) {
+			lblEnergyScale.setVisible(true);
+			lblEnergyScale.setText(energyScale.getName());
+			lblEnergyScale.setToolTipText("Escala de energia (" + energyScale
+					+ ")");
+		}
+	}
+
+	public void setWattsPercentage(int percentage) {
+		progressBarWatts.setValue(percentage);
+		progressBarWatts.setString(percentage + "% ("
+				+ new DecimalFormat("####.#").format(device.getWattsConsumed())
+				+ "W)");
 	}
 
 }

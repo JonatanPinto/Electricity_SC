@@ -7,6 +7,13 @@ import javax.swing.ImageIcon;
 
 public class ConstantGUI {
 
+	public static final Icon APP_ICON_32 = new ImageIcon(
+			"media\\images\\general\\appIconX32.png");
+
+	public static final String C_DEVICE_CATALOG_OPEN = "openDeviceCatalog";
+	public static final String C_SETTINGS_OPEN = "openSettings";
+	public static final String C_SIMULATE = "simulate";
+
 	public static final Color COLOR_PRIMARY = new Color(0, 123, 255);
 	public static final Color COLOR_SECONDARY = new Color(108, 117, 125);
 	public static final Color COLOR_SUCCESS = new Color(40, 167, 69);
@@ -27,6 +34,8 @@ public class ConstantGUI {
 			"media\\images\\others\\gearX16.png");
 	public static final Icon ICON_GEAR_GRAY_16 = new ImageIcon(
 			"media\\images\\general\\gearGrayX16.png");
+	public static final ImageIcon ICON_GEAR_WHITE_16 = new ImageIcon(
+			"media\\images\\general\\gearWhiteX16.png");
 	public static final Icon ICON_LIGHTBULB_16 = new ImageIcon(
 			"media\\images\\others\\lightbulbX16.png");
 	public static final Icon ICON_PENCIL_GRAY_16 = new ImageIcon(

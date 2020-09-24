@@ -168,12 +168,12 @@ public class Device {
 		return id;
 	}
 
-	public boolean isStade() {
+	public boolean getState() {
 		return state;
 	}
 
-	public void setStade(boolean stade) {
-		this.state = stade;
+	public void setState(boolean state) {
+		this.state = state;
 	}
 
 	public DeviceType getDeviceType() {

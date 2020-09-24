@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,17 +14,40 @@ import models.entities.EnergyScale;
 import models.entities.Season;
 import models.entities.Simulator;
 import view.MainFrame;
+import view.SettingsDialog;
+import view.devices.DeviceCatalog;
+import view.properties.ConstantGUI;
 
-public class Controller {
+public class Controller implements ActionListener {
 
 	private List<Device> devices;
 	private MainFrame mainFrame;
+	private double kiloWattCost = 572.1319;
+	private int simulationSpeed = 500;
 
 	public Controller() {
-		this.mainFrame = new MainFrame();
+		this.mainFrame = new MainFrame(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+		case ConstantGUI.C_DEVICE_CATALOG_OPEN:
+			openDeviceCatalog();
+			break;
+		case ConstantGUI.C_SETTINGS_OPEN:
+			openSettings();
+			break;
+		case ConstantGUI.C_SIMULATE:
+			start();
+			break;
+		default:
+			break;
+		}
 	}
 
 	public void endSimulation() {
+		this.mainFrame.setEnabled(true);
 		JOptionPane.showMessageDialog(null, "¡Simulación finalizada!");
 	}
 
@@ -30,7 +55,6 @@ public class Controller {
 		loadDevices();
 		setDevices(this.devices);
 		this.mainFrame.setVisible(true);
-		start();
 	}
 
 	private void loadDevices() {
@@ -57,22 +81,42 @@ public class Controller {
 		return days;
 	}
 
+	private void openDeviceCatalog() {
+		DeviceCatalog deviceCatalog = new DeviceCatalog();
+		deviceCatalog.setVisible(true);
+	}
+
+	private void openSettings() {
+		SettingsDialog settingsDialog = new SettingsDialog(simulationSpeed,
+				kiloWattCost);
+		settingsDialog.setVisible(true);
+		if (settingsDialog.isToSave()) {
+			this.kiloWattCost = settingsDialog.getKiWattCost();
+			this.simulationSpeed = settingsDialog.getSimulationSpeed();
+		}
+	}
+
 	public void setDevices(List<Device> devices) {
 		this.mainFrame.setDevices(devices);
 	}
 
 	private void start() {
-		double kiloWatsCost = 572.1319;
-		int simulationDays = 20;
+		int simulationDays = this.mainFrame.getDevicesContainer()
+				.getSimulationDays();
 		Controller controller = this;
-		new Thread(new Runnable() {
+		if (simulationDays > 0) {
+			new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				new Simulator(controller, Season.WINTER, devices,
-						simulationDays, kiloWatsCost).start();
-			}
-		}).start();
+				@Override
+				public void run() {
+					mainFrame.setEnabled(false);
+					new Simulator(controller, Season.WINTER, devices,
+							simulationDays, kiloWattCost).start();
+				}
+			}).start();
+		} else {
+			JOptionPane.showMessageDialog(null, "Estas simulando 0 días.");
+		}
 	}
 
 	public void updateDevices(int day) {

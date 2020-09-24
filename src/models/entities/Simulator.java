@@ -13,10 +13,10 @@ public class Simulator {
 	private int simulationDays;
 
 	public Simulator(Controller controller, Season season,
-			List<Device> devices, int simulationDays, double kiloWatsCost) {
+			List<Device> devices, int simulationDays, double kiloWattCost) {
 		this.controller = controller;
 		this.devices = devices;
-		this.kiloWatsCost = kiloWatsCost;
+		this.kiloWatsCost = kiloWattCost;
 		this.season = season;
 		this.simulationDays = simulationDays;
 	}

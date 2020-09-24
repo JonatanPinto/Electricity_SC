@@ -8,7 +8,6 @@ import java.awt.Component;
 
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-
 import javax.swing.JLabel;
 
 import view.components.ButtonOpaquer;
@@ -30,22 +29,32 @@ import models.entities.Device;
 import javax.swing.BoxLayout;
 
 import java.awt.Dimension;
+
 import javax.swing.JProgressBar;
+
+import controller.Controller;
 
 public class DevicesContainer extends JPanel {
 
 	private static final long serialVersionUID = 3895035509595275724L;
-	private TextField txtSimulationDays;
-	private JPanel panelNoDevices;
+	private Controller controller;
 	private JPanel containerDevices;
 	private JPanel panelDevices;
-	private double totalWattsConsumed;
+	private JPanel panelNoDevices;
 	private JProgressBar progressBarDays;
+	private double totalWattsConsumed;
+	private TextField txtSimulationDays;
+	private JButton btnSimulate;
 
-	public DevicesContainer() {
-		setOpaque(false);
+	public DevicesContainer(Controller controller) {
+		this.controller = controller;
 		initProperties();
 		initComponents();
+	}
+
+	public int getSimulationDays() {
+		String sDays = this.txtSimulationDays.getText();
+		return sDays.isEmpty() ? 0 : Integer.parseInt(sDays);
 	}
 
 	private void initComponents() {
@@ -58,12 +67,15 @@ public class DevicesContainer extends JPanel {
 		panelAddDevice.setOpaque(false);
 		panelHeader.add(panelAddDevice, BorderLayout.WEST);
 
-		JButton btnAddDevice = new JButton("Agregar dispositivo");
+		JButton btnAddDevice = new JButton();
 		btnAddDevice.setFocusPainted(false);
 		btnAddDevice.setForeground(Color.WHITE);
+		btnAddDevice.addActionListener(controller);
+		btnAddDevice.setText("Agregar dispositivo");
 		btnAddDevice.setIcon(ConstantGUI.ICON_ADD_WHITE_16);
 		btnAddDevice.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnAddDevice.setBackground(ConstantGUI.COLOR_PRIMARY);
+		btnAddDevice.setActionCommand(ConstantGUI.C_DEVICE_CATALOG_OPEN);
 		panelAddDevice.add(btnAddDevice);
 
 		JPanel panelGeneralInfo = new JPanel();
@@ -71,7 +83,9 @@ public class DevicesContainer extends JPanel {
 		panelHeader.add(panelGeneralInfo, BorderLayout.EAST);
 
 		JButton btnSettings = new ButtonOpaquer();
+		btnSettings.addActionListener(controller);
 		btnSettings.setIcon(ConstantGUI.ICON_GEAR_GRAY_16);
+		btnSettings.setActionCommand(ConstantGUI.C_SETTINGS_OPEN);
 		panelGeneralInfo.add(btnSettings);
 
 		JPanel panelSimulationOptions = new JPanel();
@@ -110,13 +124,15 @@ public class DevicesContainer extends JPanel {
 		txtSimulationDays.setHorizontalAlignment(SwingConstants.CENTER);
 		panelDaysPanel.add(txtSimulationDays);
 
-		JButton btnSimulate = new JButton();
-		panel.add(btnSimulate);
+		btnSimulate = new JButton();
 		btnSimulate.setText("Simular");
 		btnSimulate.setFocusPainted(false);
 		btnSimulate.setForeground(Color.WHITE);
+		btnSimulate.addActionListener(controller);
 		btnSimulate.setBackground(new Color(0, 123, 255));
+		btnSimulate.setActionCommand(ConstantGUI.C_SIMULATE);
 		btnSimulate.setFont(new Font("Tahoma", Font.BOLD, 15));
+		panel.add(btnSimulate);
 
 		panelDevices = new JPanel();
 		panelDevices.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -163,6 +179,7 @@ public class DevicesContainer extends JPanel {
 	}
 
 	private void initProperties() {
+		setOpaque(false);
 		setLayout(new BorderLayout(0, 0));
 	}
 
@@ -171,8 +188,9 @@ public class DevicesContainer extends JPanel {
 		for (Component component : components) {
 			if (component instanceof DeviceRowPanel) {
 				DeviceRowPanel deviceRowPanel = (DeviceRowPanel) component;
-				deviceRowPanel.setWattsValue((deviceRowPanel.getDevice()
-						.getWattsConsumed() * 100) / totalWattsConsumed);
+				deviceRowPanel
+						.setWattsPercentage((int) ((deviceRowPanel.getDevice()
+								.getWattsConsumed() * 100) / totalWattsConsumed));
 			}
 		}
 	}
@@ -201,6 +219,17 @@ public class DevicesContainer extends JPanel {
 		} else {
 			remove(panelNoDevices);
 			add(panelDevices, BorderLayout.CENTER);
+		}
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		btnSimulate.setEnabled(enabled);
+		Component[] components = containerDevices.getComponents();
+		for (Component component : components) {
+			if (component instanceof DeviceRowPanel) {
+				((DeviceRowPanel) component).setEnabled(enabled);
+			}
 		}
 	}
 
