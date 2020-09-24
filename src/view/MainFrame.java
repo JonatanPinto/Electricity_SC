@@ -31,9 +31,16 @@ public class MainFrame extends JFrame {
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 	}
-	
-	public void setDevices(List<Device> devices){
+
+	public void setDevices(List<Device> devices) {
 		this.devicesContainer.setDevices(devices);
+		this.devicesContainer.setVisible(false);
+		this.devicesContainer.setVisible(true);
+	}
+
+	public void updateDevices(int day, List<Device> devices) {
+		setDevices(devices);
+		this.devicesContainer.updateProgressDays(day);
 	}
 
 }

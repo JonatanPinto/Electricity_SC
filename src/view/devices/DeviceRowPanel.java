@@ -18,13 +18,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import models.entities.Device;
+import models.entities.DeviceType;
+import models.entities.EnergyScale;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.JProgressBar;
 import javax.swing.JToggleButton;
 
@@ -32,6 +36,7 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = -5578655020070513211L;
 	private ActionListener actionListener;
+	private Device device;
 	private JLabel lblName;
 	private JLabel lblIndex;
 	private JButton btnEdit;
@@ -60,6 +65,10 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 		setDevice(index, device);
 	}
 
+	public Device getDevice() {
+		return device;
+	}
+
 	private void initComponents() {
 		lblIndex = new JLabel();
 		lblIndex.setPreferredSize(new Dimension(50, 10));
@@ -78,10 +87,11 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 		panelData.add(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
-		lblEnergyScale = new JLabel("A++");
+		lblEnergyScale = new JLabel();
+		lblEnergyScale.setOpaque(true);
+		lblEnergyScale.setVisible(false);
 		lblEnergyScale.setBorder(new EmptyBorder(5, 5, 5, 5));
 		lblEnergyScale.setBackground(new Color(237, 238, 239));
-		lblEnergyScale.setOpaque(true);
 		panel.add(lblEnergyScale);
 
 		lblSeparator1 = new JLabel("");
@@ -90,6 +100,7 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 
 		lblDeviceType = new JLabel();
 		lblDeviceType.setOpaque(true);
+		lblDeviceType.setVisible(false);
 		lblDeviceType.setIcon(ConstantGUI.ICON_FLASH_16);
 		lblDeviceType.setBorder(new EmptyBorder(5, 5, 5, 5));
 		lblDeviceType.setBackground(new Color(237, 238, 239));
@@ -146,12 +157,10 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 		panelControls.add(panel_1);
 
 		progressBar = new JProgressBar();
-		panel_1.add(progressBar);
 		progressBar.setStringPainted(true);
-		progressBar.setString("80%");
-		progressBar.setValue(80);
+		panel_1.add(progressBar);
 
-		lblTime = new JLabel("20 horas");
+		lblTime = new JLabel();
 		lblTime.setPreferredSize(new Dimension(100, 14));
 		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelControls.add(lblTime);
@@ -214,13 +223,55 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 	}
 
 	public void setDevice(int index, Device device) {
+		this.device = device;
 		lblIndex.setText("" + index);
 		setOpaque(index % 2 != 0);
 		if (device != null) {
 			lblName.setText(device.getName());
 			lblTradeMark.setText(device.getTradeMark());
 			lblModel.setText(device.getModel());
+			EnergyScale energyScale = device.getEnergyScale();
+			if (energyScale != null) {
+				lblEnergyScale.setVisible(true);
+				lblEnergyScale.setText(energyScale.getName());
+				lblEnergyScale.setToolTipText("Escala de energia ("
+						+ energyScale + ")");
+			}
+			DeviceType deviceType = device.getDeviceType();
+			if (deviceType != null) {
+				lblDeviceType.setVisible(true);
+				lblDeviceType.setToolTipText("Tipo de dispositivo ("
+						+ deviceType.getName() + ")");
+				Icon deviceTypeIcon = null;
+				switch (deviceType) {
+				case ELECTRONIC:
+					deviceTypeIcon = ConstantGUI.ICON_FLASH_16;
+					break;
+				case HEAT_PRODUCER:
+					deviceTypeIcon = ConstantGUI.ICON_FLAME_16;
+					break;
+				case ILUMINATION:
+					deviceTypeIcon = ConstantGUI.ICON_LIGHTBULB_16;
+					break;
+				case RUN_BY_MOTOR:
+					deviceTypeIcon = ConstantGUI.ICON_GEAR_16;
+					break;
+				}
+				lblDeviceType.setIcon(deviceTypeIcon);
+			}
+			lblTime.setText(device.getUseTime() + " horas");
 		}
+	}
+
+	public void setWattsValue(double watts) {
+		int percentage = Integer.parseInt("" + (int) watts);
+		progressBar.setValue(percentage);
+		progressBar.setString(percentage + "% (" + device.getWattsConsumed()
+				+ "W)");
+	}
+
+	public void updateDevice(Device device2) {
+
 	}
 
 }

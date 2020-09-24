@@ -21,8 +21,14 @@ public class ConstantGUI {
 			"media\\images\\general\\addWhiteX16.png");
 	public static final Icon ICON_EMPTY_BOX_128 = new ImageIcon(
 			"media\\images\\others\\emptyBoxX128.png");
+	public static final Icon ICON_FLAME_16 = new ImageIcon(
+			"media\\images\\others\\flameX16.png");
+	public static final Icon ICON_GEAR_16 = new ImageIcon(
+			"media\\images\\others\\gearX16.png");
 	public static final Icon ICON_GEAR_GRAY_16 = new ImageIcon(
 			"media\\images\\general\\gearGrayX16.png");
+	public static final Icon ICON_LIGHTBULB_16 = new ImageIcon(
+			"media\\images\\others\\lightbulbX16.png");
 	public static final Icon ICON_PENCIL_GRAY_16 = new ImageIcon(
 			"media\\images\\general\\pencilGrayX16.png");
 	public static final Icon ICON_TRASH_GRAY_16 = new ImageIcon(

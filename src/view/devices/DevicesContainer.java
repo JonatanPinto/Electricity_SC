@@ -4,11 +4,10 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-
-import java.awt.FlowLayout;
 
 import javax.swing.JLabel;
 
@@ -27,8 +26,11 @@ import java.util.List;
 import javax.swing.border.LineBorder;
 
 import models.entities.Device;
+
 import javax.swing.BoxLayout;
+
 import java.awt.Dimension;
+import javax.swing.JProgressBar;
 
 public class DevicesContainer extends JPanel {
 
@@ -37,6 +39,8 @@ public class DevicesContainer extends JPanel {
 	private JPanel panelNoDevices;
 	private JPanel containerDevices;
 	private JPanel panelDevices;
+	private double totalWattsConsumed;
+	private JProgressBar progressBarDays;
 
 	public DevicesContainer() {
 		setOpaque(false);
@@ -72,20 +76,33 @@ public class DevicesContainer extends JPanel {
 
 		JPanel panelSimulationOptions = new JPanel();
 		panelSimulationOptions.setOpaque(false);
-		panelSimulationOptions.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		add(panelSimulationOptions, BorderLayout.SOUTH);
+		panelSimulationOptions.setLayout(new BorderLayout(0, 0));
+
+		progressBarDays = new JProgressBar();
+		progressBarDays.setStringPainted(true);
+		progressBarDays.setForeground(Color.GRAY);
+		progressBarDays.setLayout(new BorderLayout());
+		progressBarDays.setPreferredSize(new Dimension(146, 37));
+		progressBarDays.setBorder(new EmptyBorder(0, 0, 0, 0));
+		panelSimulationOptions.add(progressBarDays, BorderLayout.CENTER);
+
+		JPanel panel = new JPanel();
+		panel.setOpaque(false);
+		progressBarDays.add(panel, BorderLayout.EAST);
 
 		JLabel lblDays = new JLabel("D\u00EDas a simular:");
+		panel.add(lblDays);
 		lblDays.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		panelSimulationOptions.add(lblDays);
 
 		JPanel panelDaysPanel = new JPanel();
+		panel.add(panelDaysPanel);
 		panelDaysPanel.setOpaque(false);
 		panelDaysPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panelSimulationOptions.add(panelDaysPanel);
 		panelDaysPanel.setLayout(new GridLayout(0, 1, 0, 0));
 
 		txtSimulationDays = new TextField();
+		txtSimulationDays.setText("20");
 		txtSimulationDays.setBorder(new EmptyBorder(3, 3, 3, 3));
 		txtSimulationDays.setColumns(5);
 		txtSimulationDays.setNumberMode(true);
@@ -94,18 +111,18 @@ public class DevicesContainer extends JPanel {
 		panelDaysPanel.add(txtSimulationDays);
 
 		JButton btnSimulate = new JButton();
+		panel.add(btnSimulate);
 		btnSimulate.setText("Simular");
 		btnSimulate.setFocusPainted(false);
 		btnSimulate.setForeground(Color.WHITE);
 		btnSimulate.setBackground(new Color(0, 123, 255));
 		btnSimulate.setFont(new Font("Tahoma", Font.BOLD, 15));
-		panelSimulationOptions.add(btnSimulate);
 
 		panelDevices = new JPanel();
 		panelDevices.setBorder(new EmptyBorder(5, 5, 5, 5));
 		panelDevices.setOpaque(false);
-		add(panelDevices, BorderLayout.CENTER);
 		panelDevices.setLayout(new BorderLayout(0, 0));
+		add(panelDevices, BorderLayout.CENTER);
 
 		JPanel panelDevicesTitles = new JPanel();
 		panelDevicesTitles.setPreferredSize(new Dimension(523, 33));
@@ -149,13 +166,30 @@ public class DevicesContainer extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 	}
 
+	private void refreshWatts() {
+		Component[] components = containerDevices.getComponents();
+		for (Component component : components) {
+			if (component instanceof DeviceRowPanel) {
+				DeviceRowPanel deviceRowPanel = (DeviceRowPanel) component;
+				deviceRowPanel.setWattsValue((deviceRowPanel.getDevice()
+						.getWattsConsumed() * 100) / totalWattsConsumed);
+			}
+		}
+	}
+
 	public void setDevices(List<Device> devices) {
+		containerDevices.removeAll();
+		this.totalWattsConsumed = 0;
 		boolean thereAreDevices = devices != null && devices.size() > 0;
 		if (thereAreDevices) {
 			for (int i = 0; i < devices.size(); i++) {
-				containerDevices.add(new DeviceRowPanel(null, i + 1, devices
-						.get(i)));
+				Device device = devices.get(i);
+				this.totalWattsConsumed += device.getWattsConsumed();
+				DeviceRowPanel deviceRowPanel = new DeviceRowPanel(null, i + 1,
+						device);
+				containerDevices.add(deviceRowPanel);
 			}
+			refreshWatts();
 		}
 		setEmptyMode(!thereAreDevices);
 	}
@@ -168,6 +202,13 @@ public class DevicesContainer extends JPanel {
 			remove(panelNoDevices);
 			add(panelDevices, BorderLayout.CENTER);
 		}
+	}
+
+	public void updateProgressDays(int day) {
+		int days = Integer.parseInt(txtSimulationDays.getText());
+		int percentage = (day * 100) / days;
+		progressBarDays.setValue(percentage);
+		progressBarDays.setString(percentage + "% (Día " + day + ")");
 	}
 
 }
