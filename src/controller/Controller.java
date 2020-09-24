@@ -2,20 +2,18 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JOptionPane;
 
+import persistence.DeviceDAO;
 import models.entities.Device;
-import models.entities.DeviceType;
-import models.entities.EnergyScale;
 import models.entities.Season;
 import models.entities.Simulator;
 import view.MainFrame;
 import view.SettingsDialog;
-import view.devices.DeviceCatalog;
+import view.devices.DeviceCreator;
 import view.properties.ConstantGUI;
 
 public class Controller implements ActionListener {
@@ -35,6 +33,9 @@ public class Controller implements ActionListener {
 		case ConstantGUI.C_DEVICE_CATALOG_OPEN:
 			openDeviceCatalog();
 			break;
+		case ConstantGUI.C_DEVICE_CREATOR_OPEN:
+			openDeviceCreator();
+			break;
 		case ConstantGUI.C_SETTINGS_OPEN:
 			openSettings();
 			break;
@@ -46,44 +47,44 @@ public class Controller implements ActionListener {
 		}
 	}
 
+	public void editCatalogDevice(Device device) {
+		DeviceCreator deviceCreator = new DeviceCreator();
+		deviceCreator.setDevice(device);
+		deviceCreator.setVisible(true);
+		String deviceID = device.getId();
+		Device newDevice = deviceCreator.getDevice();
+		if (newDevice != null) {
+			newDevice.setId(deviceID);
+			try {
+				new DeviceDAO().updateDevice(deviceID, newDevice);
+				readCatalogDevices();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void endSimulation() {
 		this.mainFrame.setEnabled(true);
 		JOptionPane.showMessageDialog(null, "¡Simulación finalizada!");
 	}
 
 	public void initApp() {
-		loadDevices();
+		readCatalogDevices();
 		setDevices(this.devices);
 		this.mainFrame.setVisible(true);
 	}
 
-	private void loadDevices() {
-		this.devices = new ArrayList<Device>();
-		devices.add(new Device(1, true, DeviceType.ELECTRONIC, "Samsung",
-				"G-3000", "Televisor", EnergyScale.A2, 5, 20, 7,
-				generateHourOfUsePerDayRandom()));
-		devices.add(new Device(2, true, DeviceType.HEAT_PRODUCER, "LG", "Z157",
-				"Lavadora", EnergyScale.A3, 5, 20, 7,
-				generateHourOfUsePerDayRandom()));
-		devices.add(new Device(3, true, DeviceType.ILUMINATION, "LG", "Z157",
-				"Lavadora", EnergyScale.A1, 5, 20, 7,
-				generateHourOfUsePerDayRandom()));
-		devices.add(new Device(4, true, DeviceType.RUN_BY_MOTOR, "LG", "Z157",
-				"Lavadora", EnergyScale.B, 5, 20, 7,
-				generateHourOfUsePerDayRandom()));
-	}
-
-	private int[] generateHourOfUsePerDayRandom() {
-		int[] days = new int[7];
-		for (int i = 0; i < days.length; i++) {
-			days[i] = new Random().nextInt(24);
-		}
-		return days;
-	}
-
 	private void openDeviceCatalog() {
-		DeviceCatalog deviceCatalog = new DeviceCatalog();
-		deviceCatalog.setVisible(true);
+	}
+
+	private void openDeviceCreator() {
+		DeviceCreator deviceCreator = new DeviceCreator();
+		deviceCreator.setVisible(true);
+		Device device = deviceCreator.getDevice();
+		if (device != null) {
+			saveDevice(device);
+		}
 	}
 
 	private void openSettings() {
@@ -93,6 +94,15 @@ public class Controller implements ActionListener {
 		if (settingsDialog.isToSave()) {
 			this.kiloWattCost = settingsDialog.getKiWattCost();
 			this.simulationSpeed = settingsDialog.getSimulationSpeed();
+		}
+	}
+
+	private void saveDevice(Device device) {
+		try {
+			new DeviceDAO().addDevice(device);
+			readCatalogDevices();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -117,6 +127,27 @@ public class Controller implements ActionListener {
 			}).start();
 		} else {
 			JOptionPane.showMessageDialog(null, "Estas simulando 0 días.");
+		}
+	}
+
+	private void readCatalogDevices() {
+		try {
+			this.mainFrame.getDeviceCatalog().setDevices(
+					new DeviceDAO().getDevices());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void removeCatalogDevice(String deviceID) {
+		if (JOptionPane.showConfirmDialog(null,
+				"¿Estás seguro de eliminar el dispositivo?") == 0) {
+			try {
+				new DeviceDAO().removeDevice(deviceID);
+				readCatalogDevices();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

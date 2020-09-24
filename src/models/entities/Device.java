@@ -2,7 +2,7 @@ package models.entities;
 
 public class Device {
 
-	private int id;
+	private String id;
 	private boolean state;
 	private DeviceType deviceType;
 	private String tradeMark;
@@ -31,7 +31,8 @@ public class Device {
 	 * @param hourOfUsePerDay
 	 *            sistema de medición en horas
 	 */
-	public Device(int id, boolean stade, DeviceType deviceType,
+	@SuppressWarnings("unused")
+	private Device(String id, boolean stade, DeviceType deviceType,
 			String tradeMark, String model, double consumptionOff,
 			double consumptionStandBy, double consumptionOn,
 			int[] hourOfUsePerDay) {
@@ -59,10 +60,10 @@ public class Device {
 	 * @param consumptionOn
 	 * @param hourOfUsePerDay
 	 */
-	public Device(int id, boolean stade, DeviceType deviceType,
+	@SuppressWarnings("unused")
+	private Device(String id, boolean stade, DeviceType deviceType,
 			String tradeMark, String model, EnergyScale energyScale,
 			double consumptionOff, double consumptionOn, int[] hourOfUsePerDay) {
-		super();
 		this.state = stade;
 		this.id = id;
 		this.deviceType = deviceType;
@@ -85,10 +86,10 @@ public class Device {
 	 * @param consumptionOn
 	 * @param hourOfUsePerDay
 	 */
-	public Device(int id, boolean stade, DeviceType deviceType,
+	@SuppressWarnings("unused")
+	private Device(String id, boolean stade, DeviceType deviceType,
 			String tradeMark, String model, EnergyScale energyScale,
 			double consumptionOn, int[] hourOfUsePerDay) {
-		super();
 		this.state = stade;
 		this.id = id;
 		this.deviceType = deviceType;
@@ -113,11 +114,11 @@ public class Device {
 	 * @param consumptionOn
 	 * @param hourOfUsePerDay
 	 */
-	public Device(int id, boolean stade, DeviceType deviceType,
+	@SuppressWarnings("unused")
+	private Device(String id, boolean stade, DeviceType deviceType,
 			String tradeMark, String model, EnergyScale energyScale,
 			double consumptionOff, double consumptionStandBy,
 			double consumptionOn, int[] hourOfUsePerDay) {
-		super();
 		this.state = stade;
 		this.id = id;
 		this.deviceType = deviceType;
@@ -131,13 +132,13 @@ public class Device {
 	}
 
 	// Constructor con el atributo name
-	public Device(int id, boolean stade, DeviceType deviceType,
+	public Device(String id, boolean state, DeviceType deviceType,
 			String tradeMark, String model, String name,
 			EnergyScale energyScale, double consumptionOff,
 			double consumptionStandBy, double consumptionOn,
 			int[] hourOfUsePerDay) {
 		this.id = id;
-		this.state = stade;
+		this.state = state;
 		this.deviceType = deviceType;
 		this.tradeMark = tradeMark;
 		this.model = model;
@@ -164,8 +165,12 @@ public class Device {
 
 	// -------------------- Setters and Getters --------------------
 
-	public int getId() {
+	public String getId() {
 		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public boolean getState() {

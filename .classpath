@@ -7,5 +7,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/jcommon-1.0.23.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/jfreechart-1.0.19.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/jamm-0.3.1.jar"/>
+	<classpathentry kind="lib" path="libs/gson-2.8.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

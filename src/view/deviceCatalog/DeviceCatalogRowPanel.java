@@ -1,4 +1,4 @@
-package view.devices;
+package view.deviceCatalog;
 
 import javax.swing.JPanel;
 
@@ -28,15 +28,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.DecimalFormat;
 
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
-import javax.swing.JProgressBar;
 
 import controller.Controller;
 
-public class DeviceRowPanel extends JPanel implements MouseListener {
+public class DeviceCatalogRowPanel extends JPanel implements ActionListener,
+		MouseListener {
 
 	private static final long serialVersionUID = -5578655020070513211L;
 	private Controller controller;
@@ -51,21 +50,20 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 	private JLabel lblEnergyScale;
 	private JLabel lblDeviceType;
 	private JLabel lblSeparator1;
-	private JProgressBar progressBarWatts;
-	private ShutdownButton btnShutdown;
-	private JLabel lblTime;
-	private JPanel panelWatts;
 
-	public DeviceRowPanel() {
-		initProperties();
-		initComponents();
-	}
-
-	public DeviceRowPanel(Controller controller, int index, Device device) {
+	public DeviceCatalogRowPanel(Controller controller, int index, Device device) {
 		this.controller = controller;
 		initProperties();
 		initComponents();
 		setDevice(index, device);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object src = e.getSource();
+		if (src instanceof ShutdownButton) {
+
+		}
 	}
 
 	public Device getDevice() {
@@ -141,6 +139,13 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 		btnEdit.setBorder(new EmptyBorder(5, 5, 5, 5));
 		btnEdit.setIcon(ConstantGUI.ICON_PENCIL_GRAY_16);
 		btnEdit.setBackground(Color.LIGHT_GRAY);
+		btnEdit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.editCatalogDevice(device);
+			}
+		});
 		btnEdit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -153,35 +158,23 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 			}
 		});
 		panelControls.setLayout(new BoxLayout(panelControls, BoxLayout.X_AXIS));
-
-		panelWatts = new JPanel();
-		panelWatts.setOpaque(false);
-		panelWatts.setBorder(new EmptyBorder(0, 5, 0, 5));
-		panelControls.add(panelWatts);
-
-		progressBarWatts = new JProgressBar();
-		progressBarWatts.setStringPainted(true);
-		progressBarWatts.setBorderPainted(false);
-		progressBarWatts.setBorder(new EmptyBorder(0, 0, 0, 0));
-		progressBarWatts.setForeground(ConstantGUI.COLOR_PRIMARY);
-		panelWatts.add(progressBarWatts);
-
-		lblTime = new JLabel();
-		lblTime.setPreferredSize(new Dimension(100, 14));
-		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		panelControls.add(lblTime);
-
-		btnShutdown = new ShutdownButton();
-		panelControls.add(btnShutdown);
 		panelControls.add(btnEdit);
 
 		btnRemove = new JButton();
 		btnRemove.addMouseListener(this);
 		btnRemove.setFocusPainted(false);
-		btnRemove.setContentAreaFilled(false);
 		btnRemove.setBackground(Color.LIGHT_GRAY);
+		btnRemove.setContentAreaFilled(false);
+		btnRemove.addActionListener(controller);
 		btnRemove.setBorder(new EmptyBorder(5, 5, 5, 5));
 		btnRemove.setIcon(ConstantGUI.ICON_TRASH_GRAY_16);
+		btnRemove.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.removeCatalogDevice(device.getId());
+			}
+		});
 		btnRemove.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -235,11 +228,8 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 			lblName.setText(device.getName());
 			lblTradeMark.setText(device.getTradeMark());
 			lblModel.setText(device.getModel());
-			lblTime.setText(device.getUseTime() + " horas");
 			setEnergyScale(device.getEnergyScale());
 			setDeviceType(device.getDeviceType());
-			btnShutdown.setDevice(device);
-			btnShutdown.setTurnedOn(device.getState());
 		}
 	}
 
@@ -267,11 +257,6 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 		}
 	}
 
-	@Override
-	public void setEnabled(boolean enabled) {
-		btnShutdown.setEnabled(enabled);
-	}
-
 	private void setEnergyScale(EnergyScale energyScale) {
 		if (energyScale != null) {
 			lblEnergyScale.setVisible(true);
@@ -279,13 +264,6 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 			lblEnergyScale.setToolTipText("Escala de energia (" + energyScale
 					+ ")");
 		}
-	}
-
-	public void setWattsPercentage(int percentage) {
-		progressBarWatts.setValue(percentage);
-		progressBarWatts.setString(percentage + "% ("
-				+ new DecimalFormat("####.#").format(device.getWattsConsumed())
-				+ "W)");
 	}
 
 }

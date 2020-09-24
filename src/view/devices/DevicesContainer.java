@@ -45,6 +45,7 @@ public class DevicesContainer extends JPanel {
 	private double totalWattsConsumed;
 	private TextField txtSimulationDays;
 	private JButton btnSimulate;
+	private JPanel panelHeader;
 
 	public DevicesContainer(Controller controller) {
 		this.controller = controller;
@@ -58,10 +59,10 @@ public class DevicesContainer extends JPanel {
 	}
 
 	private void initComponents() {
-		JPanel panelHeader = new JPanel();
+		panelHeader = new JPanel();
 		panelHeader.setOpaque(false);
-		add(panelHeader, BorderLayout.NORTH);
 		panelHeader.setLayout(new BorderLayout(0, 0));
+		add(panelHeader, BorderLayout.NORTH);
 
 		JPanel panelAddDevice = new JPanel();
 		panelAddDevice.setOpaque(false);
@@ -179,7 +180,7 @@ public class DevicesContainer extends JPanel {
 	}
 
 	private void initProperties() {
-		setOpaque(false);
+		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 	}
 
@@ -213,6 +214,8 @@ public class DevicesContainer extends JPanel {
 	}
 
 	private void setEmptyMode(boolean condition) {
+		progressBarDays.setVisible(!condition);
+		panelHeader.setVisible(!condition);
 		if (condition) {
 			remove(panelDevices);
 			add(panelNoDevices, BorderLayout.CENTER);

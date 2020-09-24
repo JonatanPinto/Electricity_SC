@@ -11,6 +11,7 @@ public class ConstantGUI {
 			"media\\images\\general\\appIconX32.png");
 
 	public static final String C_DEVICE_CATALOG_OPEN = "openDeviceCatalog";
+	public static final String C_DEVICE_CREATOR_OPEN = "openDeviceCreator";
 	public static final String C_SETTINGS_OPEN = "openSettings";
 	public static final String C_SIMULATE = "simulate";
 

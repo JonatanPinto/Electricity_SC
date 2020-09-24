@@ -1,0 +1,48 @@
+[
+  {
+    "id": "6baabf97-77c4-4b6b-bd8b-f3296c056890",
+    "state": false,
+    "deviceType": "ILUMINATION",
+    "tradeMark": "",
+    "model": "",
+    "name": "",
+    "energyScale": "A3",
+    "ConsumptionOff": 0.0,
+    "ConsumptionStandBy": 0.0,
+    "ConsumptionOn": 0.0,
+    "hourOfUsePerDay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "useTime": 0,
+    "wattsConsumed": 0.0
+  },
+  {
+    "id": "e167c015-6767-4475-bfeb-f2c5b66fb7c3",
+    "state": false,
+    "deviceType": "ELECTRONIC",
+    "tradeMark": "Samsung",
+    "model": "G-3700",
+    "name": "Televisor 4k",
+    "energyScale": "B",
+    "ConsumptionOff": 0.0,
+    "ConsumptionStandBy": 0.0,
+    "ConsumptionOn": 0.0,
+    "hourOfUsePerDay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "useTime": 0,
+    "wattsConsumed": 0.0
+  }
+]

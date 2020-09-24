@@ -7,19 +7,22 @@ import javax.swing.JFrame;
 
 import controller.Controller;
 import models.entities.Device;
+import view.deviceCatalog.DeviceCatalog;
 import view.devices.DevicesContainer;
 import view.properties.ConstantGUI;
 
 import java.awt.Color;
 import java.util.List;
+
 import javax.swing.JTabbedPane;
-import javax.swing.JPanel;
+
 import java.awt.Font;
 
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 8456560429229699542L;
 	private Controller controller;
+	private DeviceCatalog deviceCatalog;
 	private DevicesContainer devicesContainer;
 
 	public MainFrame(Controller controller) {
@@ -28,25 +31,27 @@ public class MainFrame extends JFrame {
 		initComponents();
 	}
 
+	public DeviceCatalog getDeviceCatalog() {
+		return deviceCatalog;
+	}
+
 	public DevicesContainer getDevicesContainer() {
 		return devicesContainer;
 	}
 
 	private void initComponents() {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		tabbedPane.setBackground(Color.WHITE);
 		tabbedPane.setOpaque(true);
 		tabbedPane.setFocusable(false);
+		tabbedPane.setBackground(Color.WHITE);
+		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
 		this.devicesContainer = new DevicesContainer(controller);
-		devicesContainer.setBackground(Color.WHITE);
-		devicesContainer.setOpaque(true);
 		tabbedPane.addTab("Simulador", null, devicesContainer, null);
 
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("Catálogo", null, panel, null);
+		this.deviceCatalog = new DeviceCatalog(controller);
+		tabbedPane.addTab("Catálogo", null, deviceCatalog, null);
 	}
 
 	private void initProperties() {
