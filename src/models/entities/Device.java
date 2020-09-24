@@ -1,5 +1,7 @@
 package models.entities;
 
+import java.util.Arrays;
+
 public class Device {
 
 	private String id;
@@ -150,6 +152,12 @@ public class Device {
 		this.hourOfUsePerDay = hourOfUsePerDay;
 	}
 
+	public Device clone() {
+		return new Device(id, state, deviceType, tradeMark, model, name,
+				energyScale, this.ConsumptionOff, this.ConsumptionStandBy,
+				this.ConsumptionOn, hourOfUsePerDay);
+	}
+
 	public void use(int day, Season season) {
 		if (state) {
 			double useHours = hourOfUsePerDay[day];
@@ -239,11 +247,14 @@ public class Device {
 
 	@Override
 	public String toString() {
-		return "Device [id=" + id + ", deviceType=" + deviceType
-				+ ", tradeMark=" + tradeMark + ", model=" + model
-				+ ", energyScale=" + energyScale + ", ConsumptionOff="
-				+ ConsumptionOff + ", ConsumptionStandBy=" + ConsumptionStandBy
-				+ ", ConsumptionOn=" + ConsumptionOn + "]";
+		return "Device [id=" + id + ", state=" + state + ", deviceType="
+				+ deviceType + ", tradeMark=" + tradeMark + ", model=" + model
+				+ ", name=" + name + ", energyScale=" + energyScale
+				+ ", ConsumptionOff=" + ConsumptionOff
+				+ ", ConsumptionStandBy=" + ConsumptionStandBy
+				+ ", ConsumptionOn=" + ConsumptionOn + ", hourOfUsePerDay="
+				+ Arrays.toString(hourOfUsePerDay) + ", useTime=" + useTime
+				+ ", wattsConsumed=" + wattsConsumed + "]";
 	}
 
 }

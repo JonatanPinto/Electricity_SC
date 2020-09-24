@@ -9,13 +9,16 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.Controller;
 import view.properties.ConstantGUI;
 
 public class NoDevicesPanel extends JPanel {
 
 	private static final long serialVersionUID = 8010053067789184734L;
+	private Controller controller;
 
-	public NoDevicesPanel() {
+	public NoDevicesPanel(Controller controller) {
+		this.controller = controller;
 		initProperties();
 		initComponents();
 	}
@@ -50,9 +53,11 @@ public class NoDevicesPanel extends JPanel {
 		JButton button = new JButton();
 		button.setFocusPainted(false);
 		button.setForeground(Color.WHITE);
+		button.addActionListener(controller);
 		button.setText("Agregar dispositivo");
 		button.setBackground(ConstantGUI.COLOR_PRIMARY);
 		button.setFont(new Font("Tahoma", Font.BOLD, 15));
+		button.setActionCommand(ConstantGUI.C_DEVICE_SELECTOR_OPEN);
 		panelAddDevice.add(button);
 	}
 

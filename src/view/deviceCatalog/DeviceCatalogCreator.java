@@ -1,4 +1,4 @@
-package view.devices;
+package view.deviceCatalog;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -28,8 +28,11 @@ import models.entities.DeviceType;
 import models.entities.EnergyScale;
 
 import javax.swing.SpinnerNumberModel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
-public class DeviceCreator extends JDialog implements ActionListener {
+public class DeviceCatalogCreator extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -433841757497840469L;
 	private JComboBox<String> boxDeviceTypes;
@@ -41,8 +44,15 @@ public class DeviceCreator extends JDialog implements ActionListener {
 	private TextField txtName;
 	private TextField txtTradeMark;
 	private TextField txtModel;
+	private TextField txtDay1;
+	private TextField txtDay2;
+	private TextField txtDay3;
+	private TextField txtDay4;
+	private TextField txtDay5;
+	private TextField txtDay6;
+	private TextField txtDay7;
 
-	public DeviceCreator() {
+	public DeviceCatalogCreator() {
 		initProperties();
 		initComponents();
 		setDeviceTypes();
@@ -71,9 +81,24 @@ public class DeviceCreator extends JDialog implements ActionListener {
 		double consumptionOff = 0;
 		double consumptionStandBy = (double) spnConsumptionStandBy.getValue();
 		double consumptionOn = (double) spnConsumptionOn.getValue();
+		int[] hourOfUsePerDay = new int[7];
+		hourOfUsePerDay[0] = txtDay1.getText().isEmpty() ? 0 : Integer
+				.parseInt("" + txtDay1.getText());
+		hourOfUsePerDay[1] = txtDay2.getText().isEmpty() ? 0 : Integer
+				.parseInt("" + txtDay2.getText());
+		hourOfUsePerDay[2] = txtDay3.getText().isEmpty() ? 0 : Integer
+				.parseInt("" + txtDay3.getText());
+		hourOfUsePerDay[3] = txtDay4.getText().isEmpty() ? 0 : Integer
+				.parseInt("" + txtDay4.getText());
+		hourOfUsePerDay[4] = txtDay5.getText().isEmpty() ? 0 : Integer
+				.parseInt("" + txtDay5.getText());
+		hourOfUsePerDay[5] = txtDay6.getText().isEmpty() ? 0 : Integer
+				.parseInt("" + txtDay6.getText());
+		hourOfUsePerDay[6] = txtDay7.getText().isEmpty() ? 0 : Integer
+				.parseInt("" + txtDay7.getText());
 		return new Device(id, state, deviceType, tradeMark, model, name,
 				energyScale, consumptionOff, consumptionStandBy, consumptionOn,
-				new int[7]);
+				hourOfUsePerDay);
 	}
 
 	public Device getDevice() {
@@ -160,6 +185,101 @@ public class DeviceCreator extends JDialog implements ActionListener {
 		spnConsumptionStandBy.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panel.add(spnConsumptionStandBy);
 
+		JLabel lblConsumptionperdays = new JLabel("Consumo por d\u00EDas:");
+		panel.add(lblConsumptionperdays);
+
+		JPanel daysLabels = new JPanel();
+		panel.add(daysLabels);
+		daysLabels.setLayout(new GridLayout(1, 0, 0, 0));
+
+		JLabel lblD = new JLabel("D");
+		lblD.setHorizontalAlignment(SwingConstants.CENTER);
+		daysLabels.add(lblD);
+
+		JLabel lblL = new JLabel("L");
+		lblL.setHorizontalAlignment(SwingConstants.CENTER);
+		daysLabels.add(lblL);
+
+		JLabel lblM = new JLabel("M");
+		lblM.setHorizontalAlignment(SwingConstants.CENTER);
+		daysLabels.add(lblM);
+
+		JLabel lblMi = new JLabel("Mi");
+		lblMi.setHorizontalAlignment(SwingConstants.CENTER);
+		daysLabels.add(lblMi);
+
+		JLabel lblJ = new JLabel("J");
+		lblJ.setHorizontalAlignment(SwingConstants.CENTER);
+		daysLabels.add(lblJ);
+
+		JLabel lblV = new JLabel("V");
+		lblV.setHorizontalAlignment(SwingConstants.CENTER);
+		daysLabels.add(lblV);
+
+		JLabel lblS = new JLabel("S");
+		lblS.setHorizontalAlignment(SwingConstants.CENTER);
+		daysLabels.add(lblS);
+
+		JPanel panelDaysConsumption = new JPanel();
+		panel.add(panelDaysConsumption);
+		panelDaysConsumption.setLayout(new GridLayout(1, 0, 0, 0));
+
+		txtDay1 = new TextField();
+		txtDay1.setText("0");
+		txtDay1.setNumberMode(true);
+		txtDay1.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDay1.setBorder(new LineBorder(new Color(171, 173, 179)));
+		panelDaysConsumption.add(txtDay1);
+		txtDay1.setColumns(10);
+
+		txtDay2 = new TextField();
+		txtDay2.setText("0");
+		txtDay2.setNumberMode(true);
+		panelDaysConsumption.add(txtDay2);
+		txtDay2.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDay2.setBorder(new LineBorder(new Color(171, 173, 179)));
+		txtDay2.setColumns(10);
+
+		txtDay3 = new TextField();
+		txtDay3.setText("0");
+		txtDay3.setNumberMode(true);
+		txtDay3.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDay3.setBorder(new LineBorder(new Color(171, 173, 179)));
+		panelDaysConsumption.add(txtDay3);
+		txtDay3.setColumns(10);
+
+		txtDay4 = new TextField();
+		txtDay4.setText("0");
+		txtDay4.setNumberMode(true);
+		txtDay4.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDay4.setBorder(new LineBorder(new Color(171, 173, 179)));
+		panelDaysConsumption.add(txtDay4);
+		txtDay4.setColumns(10);
+
+		txtDay5 = new TextField();
+		txtDay5.setText("0");
+		txtDay5.setNumberMode(true);
+		txtDay5.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDay5.setBorder(new LineBorder(new Color(171, 173, 179)));
+		panelDaysConsumption.add(txtDay5);
+		txtDay5.setColumns(10);
+
+		txtDay6 = new TextField();
+		txtDay6.setText("0");
+		txtDay6.setNumberMode(true);
+		txtDay6.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDay6.setBorder(new LineBorder(new Color(171, 173, 179)));
+		panelDaysConsumption.add(txtDay6);
+		txtDay6.setColumns(10);
+
+		txtDay7 = new TextField();
+		txtDay7.setText("0");
+		txtDay7.setNumberMode(true);
+		txtDay7.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDay7.setBorder(new LineBorder(new Color(171, 173, 179)));
+		panelDaysConsumption.add(txtDay7);
+		txtDay7.setColumns(10);
+
 		JPanel panelControls = new JPanel();
 		getContentPane().add(panelControls, BorderLayout.SOUTH);
 
@@ -187,8 +307,8 @@ public class DeviceCreator extends JDialog implements ActionListener {
 		setSize(350, 550);
 		setLocationRelativeTo(null);
 		setTitle("Creador de dispositivos");
-		setIconImage(((ImageIcon) ConstantGUI.ICON_ADD_WHITE_16).getImage());
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		setIconImage(((ImageIcon) ConstantGUI.ICON_ADD_WHITE_16).getImage());
 	}
 
 	public void setDevice(Device device) {

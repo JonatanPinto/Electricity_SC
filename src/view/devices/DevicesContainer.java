@@ -51,6 +51,7 @@ public class DevicesContainer extends JPanel {
 		this.controller = controller;
 		initProperties();
 		initComponents();
+		setEmptyMode(true);
 	}
 
 	public int getSimulationDays() {
@@ -76,7 +77,7 @@ public class DevicesContainer extends JPanel {
 		btnAddDevice.setIcon(ConstantGUI.ICON_ADD_WHITE_16);
 		btnAddDevice.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnAddDevice.setBackground(ConstantGUI.COLOR_PRIMARY);
-		btnAddDevice.setActionCommand(ConstantGUI.C_DEVICE_CATALOG_OPEN);
+		btnAddDevice.setActionCommand(ConstantGUI.C_DEVICE_SELECTOR_OPEN);
 		panelAddDevice.add(btnAddDevice);
 
 		JPanel panelGeneralInfo = new JPanel();
@@ -175,7 +176,7 @@ public class DevicesContainer extends JPanel {
 		containerDevices.setLayout(new BoxLayout(containerDevices,
 				BoxLayout.Y_AXIS));
 
-		panelNoDevices = new NoDevicesPanel();
+		panelNoDevices = new NoDevicesPanel(controller);
 		// add(panelNoDevices, BorderLayout.CENTER);
 	}
 

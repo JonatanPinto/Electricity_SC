@@ -190,7 +190,6 @@ public class DeviceCatalogRowPanel extends JPanel implements ActionListener,
 	}
 
 	private void initProperties() {
-		setOpaque(false);
 		addMouseListener(this);
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new EmptyBorder(1, 1, 1, 1));
