@@ -2,11 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="media"/>
-	<classpathentry kind="src" path="libs"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry exported="true" kind="lib" path="libs/jcommon-1.0.23.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/jfreechart-1.0.19.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/jamm-0.3.1.jar"/>
-	<classpathentry kind="lib" path="libs/gson-2.8.6.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.8.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
