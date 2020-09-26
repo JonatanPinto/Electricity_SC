@@ -50,7 +50,7 @@ public class Device {
 				useHours = numberGenerator.generateDouble(useHours - 0.5,
 						useHours + 0.5);
 				if (useHours > 0) {
-					if (season != null && season.equals(Season.WINTER)
+					if (season != null && season.getDeviceType() != null
 							&& season.getDeviceType().equals(this.deviceType)) {
 						useHours += useHours
 								* season.getUsageIncreasePercentage();

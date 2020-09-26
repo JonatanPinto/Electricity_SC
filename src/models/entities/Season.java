@@ -2,8 +2,10 @@ package models.entities;
 
 public enum Season {
 
-	WINTER("Invierno", DeviceType.HEAT_PRODUCER, 0.2), SUMMER("Verano", null, 0), SPRING(
-			"Primavera", null, 0), FALL("Otoño", null, 0);
+	WINTER("Invierno", DeviceType.HEAT_PRODUCER, 0.22), SUMMER("Verano",
+			DeviceType.RUN_BY_MOTOR, 0.15), SPRING("Primavera",
+			DeviceType.ELECTRONIC, 0.08), FALL("Otoño", DeviceType.ILUMINATION,
+			0.02);
 
 	private DeviceType deviceType;
 	private String name;
