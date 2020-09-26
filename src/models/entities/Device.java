@@ -107,7 +107,7 @@ public class Device {
 		return ConsumptionOn;
 	}
 
-	public int[] getHourOfUsePerDay() {
+	public int[] getHoursOfUsePerDay() {
 		return hourOfUsePerDay;
 	}
 

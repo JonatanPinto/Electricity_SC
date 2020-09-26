@@ -50,6 +50,18 @@ public class DeviceCatalogRowPanel extends JPanel implements ActionListener,
 	private JLabel lblEnergyScale;
 	private JLabel lblDeviceType;
 	private JLabel lblSeparator1;
+	private JPanel panel_3;
+	private JLabel lblDay0;
+	private JLabel lblDay1;
+	private JLabel lblDay2;
+	private JLabel lblDay3;
+	private JLabel lblDay4;
+	private JLabel lblDay5;
+	private JLabel lblDay6;
+	private JPanel panelControls;
+	private JPanel panel_1;
+	private JLabel lblConsuptionStandBy;
+	private JLabel lblConsumptionOn;
 
 	public DeviceCatalogRowPanel(CatalogController controller, int index,
 			Device device) {
@@ -81,8 +93,8 @@ public class DeviceCatalogRowPanel extends JPanel implements ActionListener,
 
 		JPanel panelData = new JPanel();
 		panelData.setOpaque(false);
-		panelData.setLayout(new GridLayout(1, 0, 0, 0));
 		add(panelData, BorderLayout.CENTER);
+		panelData.setLayout(new BorderLayout(0, 0));
 
 		panel = new JPanel();
 		panel.setOpaque(false);
@@ -127,12 +139,77 @@ public class DeviceCatalogRowPanel extends JPanel implements ActionListener,
 		lblModel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		panel.add(lblModel);
 
-		JPanel panelControls = new JPanel();
-		panelControls.setBorder(new EmptyBorder(0, 0, 0, 5));
+		panel_1 = new JPanel();
+		panel_1.setOpaque(false);
+		panelData.add(panel_1, BorderLayout.EAST);
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
+
+		lblConsumptionOn = new JLabel();
+		lblConsumptionOn.setPreferredSize(new Dimension(150, 14));
+		lblConsumptionOn.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel_1.add(lblConsumptionOn);
+
+		lblConsuptionStandBy = new JLabel();
+		lblConsuptionStandBy.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblConsuptionStandBy.setPreferredSize(new Dimension(150, 14));
+		panel_1.add(lblConsuptionStandBy);
+
+		panel_3 = new JPanel();
+		panel_1.add(panel_3);
+		panel_3.setBorder(new EmptyBorder(0, 0, 0, 0));
+		panel_3.setPreferredSize(new Dimension(200, 10));
+		panel_3.setOpaque(false);
+		panel_3.setLayout(new GridLayout(1, 0, 0, 0));
+
+		lblDay0 = new JLabel();
+		lblDay0.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDay0.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel_3.add(lblDay0);
+
+		lblDay1 = new JLabel();
+		lblDay1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDay1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel_3.add(lblDay1);
+
+		lblDay2 = new JLabel();
+		lblDay2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDay2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel_3.add(lblDay2);
+
+		lblDay3 = new JLabel();
+		lblDay3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDay3.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel_3.add(lblDay3);
+
+		lblDay4 = new JLabel();
+		lblDay4.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDay4.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel_3.add(lblDay4);
+
+		lblDay5 = new JLabel();
+		lblDay5.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDay5.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel_3.add(lblDay5);
+
+		lblDay6 = new JLabel();
+		lblDay6.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDay6.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel_3.add(lblDay6);
+
+		JPanel panelEast = new JPanel();
+		panelEast.setPreferredSize(new Dimension(100, 10));
+		panelEast.setBorder(new EmptyBorder(0, 0, 0, 0));
+		panelEast.setOpaque(false);
+		add(panelEast, BorderLayout.EAST);
+		panelEast.setLayout(new BorderLayout(0, 0));
+
+		panelControls = new JPanel();
 		panelControls.setOpaque(false);
-		add(panelControls, BorderLayout.EAST);
+		panelEast.add(panelControls, BorderLayout.EAST);
+		panelControls.setLayout(new GridLayout(0, 2, 0, 0));
 
 		btnEdit = new JButton();
+		panelControls.add(btnEdit);
 		btnEdit.addMouseListener(this);
 		btnEdit.setFocusPainted(false);
 		btnEdit.setContentAreaFilled(false);
@@ -140,28 +217,9 @@ public class DeviceCatalogRowPanel extends JPanel implements ActionListener,
 		btnEdit.setBorder(new EmptyBorder(5, 5, 5, 5));
 		btnEdit.setIcon(ConstantGUI.ICON_PENCIL_GRAY_16);
 		btnEdit.setBackground(Color.LIGHT_GRAY);
-		btnEdit.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.editCatalogDevice(device);
-			}
-		});
-		btnEdit.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnEdit.setContentAreaFilled(true);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnEdit.setContentAreaFilled(false);
-			}
-		});
-		panelControls.setLayout(new BoxLayout(panelControls, BoxLayout.X_AXIS));
-		panelControls.add(btnEdit);
 
 		btnRemove = new JButton();
+		panelControls.add(btnRemove);
 		btnRemove.addMouseListener(this);
 		btnRemove.setFocusPainted(false);
 		btnRemove.setBackground(Color.LIGHT_GRAY);
@@ -187,7 +245,24 @@ public class DeviceCatalogRowPanel extends JPanel implements ActionListener,
 				btnRemove.setContentAreaFilled(false);
 			}
 		});
-		panelControls.add(btnRemove);
+		btnEdit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.editCatalogDevice(device);
+			}
+		});
+		btnEdit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnEdit.setContentAreaFilled(true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnEdit.setContentAreaFilled(false);
+			}
+		});
 	}
 
 	private void initProperties() {
@@ -230,6 +305,17 @@ public class DeviceCatalogRowPanel extends JPanel implements ActionListener,
 			lblModel.setText(device.getModel());
 			setEnergyScale(device.getEnergyScale());
 			setDeviceType(device.getDeviceType());
+			int[] hoursOfUsePerDay = device.getHoursOfUsePerDay();
+			lblDay0.setText("" + hoursOfUsePerDay[0]);
+			lblDay1.setText("" + hoursOfUsePerDay[1]);
+			lblDay2.setText("" + hoursOfUsePerDay[2]);
+			lblDay3.setText("" + hoursOfUsePerDay[3]);
+			lblDay4.setText("" + hoursOfUsePerDay[4]);
+			lblDay5.setText("" + hoursOfUsePerDay[5]);
+			lblDay6.setText("" + hoursOfUsePerDay[6]);
+			lblConsumptionOn.setText("" + device.getConsumptionOn() + " kWh");
+			lblConsuptionStandBy.setText("" + device.getConsumptionStandBy()
+					+ " kWh");
 		}
 	}
 

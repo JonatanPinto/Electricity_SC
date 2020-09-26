@@ -160,7 +160,7 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 		panel.add(txtModel);
 
 		JLabel lblConsumptionOn = new JLabel();
-		lblConsumptionOn.setText("Consumo(vatios/hora) en modo prendido:");
+		lblConsumptionOn.setText("Consumo (kWh) en modo prendido:");
 		lblConsumptionOn.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panel.add(lblConsumptionOn);
 
@@ -171,8 +171,7 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 		panel.add(spnConsumptionOn);
 
 		JLabel lblConsumptionStandBy = new JLabel();
-		lblConsumptionStandBy
-				.setText("Consumo(vatios/hora) en modo descanso: ");
+		lblConsumptionStandBy.setText("Consumo (kWh) en modo descanso: ");
 		lblConsumptionStandBy.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panel.add(lblConsumptionStandBy);
 
@@ -183,6 +182,7 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 		panel.add(spnConsumptionStandBy);
 
 		JLabel lblConsumptionperdays = new JLabel("Consumo por d\u00EDas:");
+		lblConsumptionperdays.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panel.add(lblConsumptionperdays);
 
 		JPanel daysLabels = new JPanel();
@@ -322,7 +322,7 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 		txtModel.setText(device.getModel());
 		spnConsumptionOn.setValue(device.getConsumptionOn());
 		spnConsumptionStandBy.setValue(device.getConsumptionStandBy());
-		int[] hourOfUsePerDay = device.getHourOfUsePerDay();
+		int[] hourOfUsePerDay = device.getHoursOfUsePerDay();
 		txtDay1.setText("" + hourOfUsePerDay[0]);
 		txtDay2.setText("" + hourOfUsePerDay[1]);
 		txtDay3.setText("" + hourOfUsePerDay[2]);
