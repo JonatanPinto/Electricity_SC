@@ -9,15 +9,15 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controller.Controller;
+import controller.PreferencesController;
 import view.properties.ConstantGUI;
 
 public class NoDevicesPanel extends JPanel {
 
 	private static final long serialVersionUID = 8010053067789184734L;
-	private Controller controller;
+	private PreferencesController controller;
 
-	public NoDevicesPanel(Controller controller) {
+	public NoDevicesPanel(PreferencesController controller) {
 		this.controller = controller;
 		initProperties();
 		initComponents();

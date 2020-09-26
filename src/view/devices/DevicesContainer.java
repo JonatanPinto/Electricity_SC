@@ -32,12 +32,12 @@ import java.awt.Dimension;
 
 import javax.swing.JProgressBar;
 
-import controller.Controller;
+import controller.PreferencesController;
 
 public class DevicesContainer extends JPanel {
 
 	private static final long serialVersionUID = 3895035509595275724L;
-	private Controller controller;
+	private PreferencesController controller;
 	private JPanel containerDevices;
 	private JPanel panelDevices;
 	private JPanel panelNoDevices;
@@ -47,7 +47,7 @@ public class DevicesContainer extends JPanel {
 	private JButton btnSimulate;
 	private JPanel panelHeader;
 
-	public DevicesContainer(Controller controller) {
+	public DevicesContainer(PreferencesController controller) {
 		this.controller = controller;
 		initProperties();
 		initComponents();

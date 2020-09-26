@@ -10,7 +10,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 
 import models.entities.Device;
-import controller.Controller;
+import controller.CatalogController;
 import view.properties.ConstantGUI;
 
 import java.awt.Font;
@@ -20,10 +20,10 @@ import java.awt.GridLayout;
 public class DeviceCatalog extends JPanel {
 
 	private static final long serialVersionUID = 4902612989049174248L;
-	private Controller controller;
+	private CatalogController controller;
 	private JPanel containerDevices;
 
-	public DeviceCatalog(Controller controller) {
+	public DeviceCatalog(CatalogController controller) {
 		this.controller = controller;
 		initProperties();
 		initComponents();
@@ -68,6 +68,7 @@ public class DeviceCatalog extends JPanel {
 		auxContainerDevices.setLayout(new BorderLayout(0, 0));
 
 		containerDevices = new JPanel();
+		containerDevices.setOpaque(false);
 		auxContainerDevices.add(containerDevices, BorderLayout.NORTH);
 		containerDevices.setLayout(new GridLayout(0, 1, 0, 0));
 	}

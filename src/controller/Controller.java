@@ -2,45 +2,40 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import persistence.DeviceDAO;
 import models.entities.Device;
 import models.entities.Season;
 import models.entities.Simulator;
 import view.MainFrame;
 import view.SettingsDialog;
-import view.deviceCatalog.DeviceCatalogCreator;
-import view.deviceSelector.DeviceSelector;
 import view.properties.ConstantGUI;
 
 public class Controller implements ActionListener {
 
+	private CatalogController catalogController;
 	private double kiloWattCost = 572.1319;
 	private MainFrame mainFrame;
+	private PreferencesController preferencesController;
 	private List<Device> selectedDevices;
 	private int simulationSpeed = 1000;
 
 	public Controller() {
-		this.mainFrame = new MainFrame(this);
+		this.catalogController = new CatalogController();
+		this.preferencesController = new PreferencesController();
+		this.mainFrame = new MainFrame(catalogController, preferencesController);
+		this.catalogController.setDeviceCatalog(this.mainFrame
+				.getDeviceCatalog());
+		this.preferencesController.setDevicesContainer(this.mainFrame
+				.getDevicesContainer());
+		loadData();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
-		case ConstantGUI.C_DEVICE_CATALOG_OPEN:
-			openDeviceCatalog();
-			break;
-		case ConstantGUI.C_DEVICE_CREATOR_OPEN:
-			openDeviceCreator();
-			break;
-		case ConstantGUI.C_DEVICE_SELECTOR_OPEN:
-			openDeviceSelector();
-			break;
 		case ConstantGUI.C_SETTINGS_OPEN:
 			openSettings();
 			break;
@@ -52,62 +47,18 @@ public class Controller implements ActionListener {
 		}
 	}
 
-	public void editCatalogDevice(Device device) {
-		DeviceCatalogCreator deviceCatalogCreator = new DeviceCatalogCreator();
-		deviceCatalogCreator.setDevice(device);
-		deviceCatalogCreator.setVisible(true);
-		String deviceID = device.getId();
-		Device newDevice = deviceCatalogCreator.getDevice();
-		if (newDevice != null) {
-			newDevice.setId(deviceID);
-			try {
-				new DeviceDAO().updateDeviceOnCatalog(deviceID, newDevice);
-				readCatalogDevices();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	public void endSimulation() {
 		this.mainFrame.setEnabled(true);
 		JOptionPane.showMessageDialog(null, "¡Simulación finalizada!");
 	}
 
 	public void initApp() {
-		readCatalogDevices();
 		this.mainFrame.setVisible(true);
 	}
 
-	private void openDeviceCatalog() {
-	}
-
-	private void openDeviceCreator() {
-		DeviceCatalogCreator deviceCatalogCreator = new DeviceCatalogCreator();
-		deviceCatalogCreator.setVisible(true);
-		Device device = deviceCatalogCreator.getDevice();
-		if (device != null) {
-			saveDeviceOnCatalog(device);
-		}
-	}
-
-	private void openDeviceSelector() {
-		List<Device> devices;
-		try {
-			devices = new DeviceDAO().getDevicesOnCatalog();
-			DeviceSelector deviceSelector = new DeviceSelector(devices);
-			deviceSelector.setVisible(true);
-			List<Device> selectedDevices = deviceSelector.getSelectedDevices();
-			if (selectedDevices != null) {
-				if (this.selectedDevices == null) {
-					this.selectedDevices = new ArrayList<Device>();
-				}
-				this.selectedDevices.addAll(selectedDevices);
-				setSelectedDevices(this.selectedDevices);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void loadData() {
+		this.catalogController.loadCatalogDevices();
+		this.preferencesController.loadPreferredDevices();
 	}
 
 	private void openSettings() {
@@ -120,28 +71,6 @@ public class Controller implements ActionListener {
 		}
 	}
 
-	private void saveDeviceOnCatalog(Device device) {
-		try {
-			new DeviceDAO().addDeviceOnCatalog(device);
-			readCatalogDevices();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void saveDeviceOnPreferences(Device device) {
-		try {
-			new DeviceDAO().addDeviceOnPreferences(device);
-			readCatalogDevices();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void setSelectedDevices(List<Device> devices) {
-		this.mainFrame.setDevices(devices);
-	}
-
 	private void start() {
 		int simulationDays = this.mainFrame.getDevicesContainer()
 				.getSimulationDays();
@@ -151,7 +80,6 @@ public class Controller implements ActionListener {
 
 				@Override
 				public void run() {
-					System.out.println(selectedDevices);
 					mainFrame.setEnabled(false);
 					new Simulator(controller, Season.WINTER, selectedDevices,
 							simulationDays, kiloWattCost, simulationSpeed)
@@ -160,27 +88,6 @@ public class Controller implements ActionListener {
 			}).start();
 		} else {
 			JOptionPane.showMessageDialog(null, "Estas simulando 0 días.");
-		}
-	}
-
-	private void readCatalogDevices() {
-		try {
-			this.mainFrame.getDeviceCatalog().setDevices(
-					new DeviceDAO().getDevicesOnCatalog());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void removeCatalogDevice(String deviceID) {
-		if (JOptionPane.showConfirmDialog(null,
-				"¿Estás seguro de eliminar el dispositivo?") == 0) {
-			try {
-				new DeviceDAO().removeDeviceOnCatalog(deviceID);
-				readCatalogDevices();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 

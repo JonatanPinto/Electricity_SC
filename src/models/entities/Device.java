@@ -11,134 +11,17 @@ public class Device {
 	private String model;
 	private String name;
 	private EnergyScale energyScale;
-	private double ConsumptionOff;
 	private double ConsumptionStandBy;
 	private double ConsumptionOn;
-	// private int useTime;
 	private int[] hourOfUsePerDay;
 	private int useTime;
 	private double wattsConsumed;
 
-	// - <-------- UseTime -------> +
-
-	/**
-	 * 
-	 * @param id
-	 * @param deviceType
-	 * @param tradeMark
-	 * @param model
-	 * @param consumptionOff
-	 * @param consumptionStandBy
-	 * @param consumptionOn
-	 * @param hourOfUsePerDay
-	 *            sistema de medición en horas
-	 */
-	@SuppressWarnings("unused")
-	private Device(String id, boolean stade, DeviceType deviceType,
-			String tradeMark, String model, double consumptionOff,
-			double consumptionStandBy, double consumptionOn,
-			int[] hourOfUsePerDay) {
-		super();
-		this.state = stade;
-		this.id = id;
-		this.deviceType = deviceType;
-		this.tradeMark = tradeMark;
-		this.model = model;
-		this.energyScale = EnergyScale.N;
-		ConsumptionOff = consumptionOff;
-		ConsumptionStandBy = consumptionStandBy;
-		ConsumptionOn = consumptionOn;
-		this.hourOfUsePerDay = hourOfUsePerDay;
-	}
-
-	/**
-	 * 
-	 * @param id
-	 * @param deviceType
-	 * @param tradeMark
-	 * @param model
-	 * @param energyScale
-	 * @param consumptionOff
-	 * @param consumptionOn
-	 * @param hourOfUsePerDay
-	 */
-	@SuppressWarnings("unused")
-	private Device(String id, boolean stade, DeviceType deviceType,
-			String tradeMark, String model, EnergyScale energyScale,
-			double consumptionOff, double consumptionOn, int[] hourOfUsePerDay) {
-		this.state = stade;
-		this.id = id;
-		this.deviceType = deviceType;
-		this.tradeMark = tradeMark;
-		this.model = model;
-		this.energyScale = energyScale;
-		ConsumptionOff = consumptionOff;
-		ConsumptionStandBy = 0;
-		ConsumptionOn = consumptionOn;
-		this.hourOfUsePerDay = hourOfUsePerDay;
-	}
-
-	/**
-	 * 
-	 * @param id
-	 * @param deviceType
-	 * @param tradeMark
-	 * @param model
-	 * @param energyScale
-	 * @param consumptionOn
-	 * @param hourOfUsePerDay
-	 */
-	@SuppressWarnings("unused")
-	private Device(String id, boolean stade, DeviceType deviceType,
-			String tradeMark, String model, EnergyScale energyScale,
-			double consumptionOn, int[] hourOfUsePerDay) {
-		this.state = stade;
-		this.id = id;
-		this.deviceType = deviceType;
-		this.tradeMark = tradeMark;
-		this.model = model;
-		this.energyScale = energyScale;
-		ConsumptionOff = 0;
-		ConsumptionStandBy = 0;
-		ConsumptionOn = consumptionOn;
-		this.hourOfUsePerDay = hourOfUsePerDay;
-	}
-
-	/**
-	 * 
-	 * @param id
-	 * @param deviceType
-	 * @param tradeMark
-	 * @param model
-	 * @param energyScale
-	 * @param consumptionOff
-	 * @param consumptionStandBy
-	 * @param consumptionOn
-	 * @param hourOfUsePerDay
-	 */
-	@SuppressWarnings("unused")
-	private Device(String id, boolean stade, DeviceType deviceType,
-			String tradeMark, String model, EnergyScale energyScale,
-			double consumptionOff, double consumptionStandBy,
-			double consumptionOn, int[] hourOfUsePerDay) {
-		this.state = stade;
-		this.id = id;
-		this.deviceType = deviceType;
-		this.tradeMark = tradeMark;
-		this.model = model;
-		this.energyScale = energyScale;
-		ConsumptionOff = consumptionOff;
-		ConsumptionStandBy = consumptionStandBy;
-		ConsumptionOn = consumptionOn;
-		this.hourOfUsePerDay = hourOfUsePerDay;
-	}
-
 	// Constructor con el atributo name
 	public Device(String id, boolean state, DeviceType deviceType,
 			String tradeMark, String model, String name,
-			EnergyScale energyScale, double consumptionOff,
-			double consumptionStandBy, double consumptionOn,
-			int[] hourOfUsePerDay) {
+			EnergyScale energyScale, double consumptionStandBy,
+			double consumptionOn, int[] hourOfUsePerDay) {
 		this.id = id;
 		this.state = state;
 		this.deviceType = deviceType;
@@ -146,7 +29,6 @@ public class Device {
 		this.model = model;
 		this.name = name;
 		this.energyScale = energyScale;
-		ConsumptionOff = consumptionOff;
 		ConsumptionStandBy = consumptionStandBy;
 		ConsumptionOn = consumptionOn;
 		this.hourOfUsePerDay = hourOfUsePerDay;
@@ -154,8 +36,8 @@ public class Device {
 
 	public Device clone() {
 		return new Device(id, state, deviceType, tradeMark, model, name,
-				energyScale, this.ConsumptionOff, this.ConsumptionStandBy,
-				this.ConsumptionOn, hourOfUsePerDay);
+				energyScale, this.ConsumptionStandBy, this.ConsumptionOn,
+				hourOfUsePerDay);
 	}
 
 	public void use(int day, Season season) {
@@ -213,10 +95,6 @@ public class Device {
 		return energyScale;
 	}
 
-	public double getConsumptionOff() {
-		return ConsumptionOff;
-	}
-
 	public double getConsumptionStandBy() {
 		return ConsumptionStandBy;
 	}
@@ -250,7 +128,6 @@ public class Device {
 		return "Device [id=" + id + ", state=" + state + ", deviceType="
 				+ deviceType + ", tradeMark=" + tradeMark + ", model=" + model
 				+ ", name=" + name + ", energyScale=" + energyScale
-				+ ", ConsumptionOff=" + ConsumptionOff
 				+ ", ConsumptionStandBy=" + ConsumptionStandBy
 				+ ", ConsumptionOn=" + ConsumptionOn + ", hourOfUsePerDay="
 				+ Arrays.toString(hourOfUsePerDay) + ", useTime=" + useTime

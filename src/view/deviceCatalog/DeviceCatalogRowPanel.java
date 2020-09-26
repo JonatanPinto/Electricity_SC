@@ -32,13 +32,13 @@ import java.awt.event.MouseListener;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 
-import controller.Controller;
+import controller.CatalogController;
 
 public class DeviceCatalogRowPanel extends JPanel implements ActionListener,
 		MouseListener {
 
 	private static final long serialVersionUID = -5578655020070513211L;
-	private Controller controller;
+	private CatalogController controller;
 	private Device device;
 	private JLabel lblName;
 	private JLabel lblIndex;
@@ -51,7 +51,8 @@ public class DeviceCatalogRowPanel extends JPanel implements ActionListener,
 	private JLabel lblDeviceType;
 	private JLabel lblSeparator1;
 
-	public DeviceCatalogRowPanel(Controller controller, int index, Device device) {
+	public DeviceCatalogRowPanel(CatalogController controller, int index,
+			Device device) {
 		this.controller = controller;
 		initProperties();
 		initComponents();

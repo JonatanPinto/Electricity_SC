@@ -5,7 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import controller.Controller;
+import controller.CatalogController;
+import controller.PreferencesController;
 import models.entities.Device;
 import view.deviceCatalog.DeviceCatalog;
 import view.devices.DevicesContainer;
@@ -21,12 +22,15 @@ import java.awt.Font;
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 8456560429229699542L;
-	private Controller controller;
+	private CatalogController catalogController;
+	private PreferencesController preferencesController;
 	private DeviceCatalog deviceCatalog;
 	private DevicesContainer devicesContainer;
 
-	public MainFrame(Controller controller) {
-		this.controller = controller;
+	public MainFrame(CatalogController catalogController,
+			PreferencesController preferencesController) {
+		this.catalogController = catalogController;
+		this.preferencesController = preferencesController;
 		initProperties();
 		initComponents();
 	}
@@ -47,10 +51,10 @@ public class MainFrame extends JFrame {
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
-		this.devicesContainer = new DevicesContainer(controller);
+		this.devicesContainer = new DevicesContainer(preferencesController);
 		tabbedPane.addTab("Simulador", null, devicesContainer, null);
 
-		this.deviceCatalog = new DeviceCatalog(controller);
+		this.deviceCatalog = new DeviceCatalog(catalogController);
 		tabbedPane.addTab("Catálogo", null, deviceCatalog, null);
 	}
 
@@ -63,20 +67,16 @@ public class MainFrame extends JFrame {
 		setIconImage(((ImageIcon) ConstantGUI.APP_ICON_32).getImage());
 	}
 
-	public void setDevices(List<Device> devices) {
-		this.devicesContainer.setDevices(devices);
-		this.devicesContainer.setVisible(false);
-		this.devicesContainer.setVisible(true);
-	}
-
 	@Override
 	public void setEnabled(boolean b) {
 		this.devicesContainer.setEnabled(b);
 	}
 
 	public void updateDevices(int day, List<Device> devices) {
-		setDevices(devices);
+		this.devicesContainer.setDevices(devices);
 		this.devicesContainer.updateProgressDays(day);
+		this.devicesContainer.setVisible(false);
+		this.devicesContainer.setVisible(true);
 	}
 
 }

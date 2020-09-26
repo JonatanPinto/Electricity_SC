@@ -1,4 +1,4 @@
-package view.deviceCatalog;
+package view.devices;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -28,7 +28,6 @@ import models.entities.DeviceType;
 import models.entities.EnergyScale;
 
 import javax.swing.SpinnerNumberModel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
@@ -78,7 +77,6 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 		String name = txtName.getText();
 		EnergyScale energyScale = EnergyScale.values()[boxEnergyScales
 				.getSelectedIndex()];
-		double consumptionOff = 0;
 		double consumptionStandBy = (double) spnConsumptionStandBy.getValue();
 		double consumptionOn = (double) spnConsumptionOn.getValue();
 		int[] hourOfUsePerDay = new int[7];
@@ -97,8 +95,7 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 		hourOfUsePerDay[6] = txtDay7.getText().isEmpty() ? 0 : Integer
 				.parseInt("" + txtDay7.getText());
 		return new Device(id, state, deviceType, tradeMark, model, name,
-				energyScale, consumptionOff, consumptionStandBy, consumptionOn,
-				hourOfUsePerDay);
+				energyScale, consumptionStandBy, consumptionOn, hourOfUsePerDay);
 	}
 
 	public Device getDevice() {
@@ -325,6 +322,15 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 		txtModel.setText(device.getModel());
 		spnConsumptionOn.setValue(device.getConsumptionOn());
 		spnConsumptionStandBy.setValue(device.getConsumptionStandBy());
+		int[] hourOfUsePerDay = device.getHourOfUsePerDay();
+		txtDay1.setText("" + hourOfUsePerDay[0]);
+		txtDay2.setText("" + hourOfUsePerDay[1]);
+		txtDay3.setText("" + hourOfUsePerDay[2]);
+		txtDay4.setText("" + hourOfUsePerDay[3]);
+		txtDay5.setText("" + hourOfUsePerDay[4]);
+		txtDay6.setText("" + hourOfUsePerDay[5]);
+		txtDay7.setText("" + hourOfUsePerDay[6]);
+		btnCreate.setText("Editar dispositivo");
 	}
 
 	private void setDeviceTypes() {
