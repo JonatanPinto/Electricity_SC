@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import models.entities.Device;
 import persistence.DeviceDAO;
 import view.deviceCatalog.DeviceCatalog;
-import view.devices.DeviceCatalogCreator;
+import view.devices.DeviceCreator;
 import view.properties.ConstantGUI;
 
 public class CatalogController implements ActionListener {
@@ -31,11 +31,11 @@ public class CatalogController implements ActionListener {
 	}
 
 	public void editCatalogDevice(Device device) {
-		DeviceCatalogCreator deviceCatalogCreator = new DeviceCatalogCreator();
-		deviceCatalogCreator.setDevice(device);
-		deviceCatalogCreator.setVisible(true);
+		DeviceCreator deviceCreator = new DeviceCreator();
+		deviceCreator.setDevice(device);
+		deviceCreator.setVisible(true);
 		String deviceID = device.getId();
-		Device newDevice = deviceCatalogCreator.getDevice();
+		Device newDevice = deviceCreator.getDevice();
 		if (newDevice != null) {
 			newDevice.setId(deviceID);
 			try {
@@ -58,9 +58,9 @@ public class CatalogController implements ActionListener {
 	}
 
 	private void openDeviceCreator() {
-		DeviceCatalogCreator deviceCatalogCreator = new DeviceCatalogCreator();
-		deviceCatalogCreator.setVisible(true);
-		Device device = deviceCatalogCreator.getDevice();
+		DeviceCreator deviceCreator = new DeviceCreator();
+		deviceCreator.setVisible(true);
+		Device device = deviceCreator.getDevice();
 		if (device != null) {
 			saveDeviceOnCatalog(device);
 		}

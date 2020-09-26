@@ -31,7 +31,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-public class DeviceCatalogCreator extends JDialog implements ActionListener {
+public class DeviceCreator extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -433841757497840469L;
 	private JComboBox<String> boxDeviceTypes;
@@ -51,7 +51,7 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 	private TextField txtDay6;
 	private TextField txtDay7;
 
-	public DeviceCatalogCreator() {
+	public DeviceCreator() {
 		initProperties();
 		initComponents();
 		setDeviceTypes();
@@ -69,7 +69,7 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 
 	private Device buildDevice() {
 		String id = UUID.randomUUID().toString();
-		boolean state = false;
+		boolean state = device != null ? device.getState() : true;
 		DeviceType deviceType = DeviceType.values()[boxDeviceTypes
 				.getSelectedIndex()];
 		String tradeMark = txtTradeMark.getText();
@@ -94,6 +94,9 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 				.parseInt("" + txtDay6.getText());
 		hourOfUsePerDay[6] = txtDay7.getText().isEmpty() ? 0 : Integer
 				.parseInt("" + txtDay7.getText());
+		if (device != null) {
+
+		}
 		return new Device(id, state, deviceType, tradeMark, model, name,
 				energyScale, consumptionStandBy, consumptionOn, hourOfUsePerDay);
 	}
@@ -309,6 +312,7 @@ public class DeviceCatalogCreator extends JDialog implements ActionListener {
 	}
 
 	public void setDevice(Device device) {
+		this.device = device;
 		txtName.setText(device.getName());
 		DeviceType deviceType = device.getDeviceType();
 		if (deviceType != null) {

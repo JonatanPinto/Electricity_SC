@@ -20,11 +20,13 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.GridLayout;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.swing.border.LineBorder;
 
 import models.entities.Device;
+import models.entities.Season;
 
 import javax.swing.BoxLayout;
 
@@ -32,12 +34,18 @@ import java.awt.Dimension;
 
 import javax.swing.JProgressBar;
 
+import controller.Controller;
 import controller.PreferencesController;
+
+import javax.swing.JComboBox;
+
+import java.awt.FlowLayout;
 
 public class DevicesContainer extends JPanel {
 
 	private static final long serialVersionUID = 3895035509595275724L;
-	private PreferencesController controller;
+	private Controller controller;
+	private PreferencesController preferencesController;
 	private JPanel containerDevices;
 	private JPanel panelDevices;
 	private JPanel panelNoDevices;
@@ -46,12 +54,23 @@ public class DevicesContainer extends JPanel {
 	private TextField txtSimulationDays;
 	private JButton btnSimulate;
 	private JPanel panelHeader;
+	private JComboBox<String> boxSeasons;
+	private JLabel lblBill;
+	private double totalCost;
+	private double kiloWattCost;
+	private JLabel lblTotalWatts;
 
-	public DevicesContainer(PreferencesController controller) {
+	public DevicesContainer(Controller controller,
+			PreferencesController preferencesController) {
 		this.controller = controller;
+		this.preferencesController = preferencesController;
 		initProperties();
 		initComponents();
 		setEmptyMode(true);
+	}
+
+	public Season getSeason() {
+		return Season.values()[boxSeasons.getSelectedIndex()];
 	}
 
 	public int getSimulationDays() {
@@ -72,7 +91,7 @@ public class DevicesContainer extends JPanel {
 		JButton btnAddDevice = new JButton();
 		btnAddDevice.setFocusPainted(false);
 		btnAddDevice.setForeground(Color.WHITE);
-		btnAddDevice.addActionListener(controller);
+		btnAddDevice.addActionListener(preferencesController);
 		btnAddDevice.setText("Agregar dispositivo");
 		btnAddDevice.setIcon(ConstantGUI.ICON_ADD_WHITE_16);
 		btnAddDevice.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -89,6 +108,20 @@ public class DevicesContainer extends JPanel {
 		btnSettings.setIcon(ConstantGUI.ICON_GEAR_GRAY_16);
 		btnSettings.setActionCommand(ConstantGUI.C_SETTINGS_OPEN);
 		panelGeneralInfo.add(btnSettings);
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setOpaque(false);
+		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		panelHeader.add(panel_1, BorderLayout.CENTER);
+
+		lblBill = new JLabel();
+		lblBill.setFont(new Font("Tahoma", Font.BOLD, 15));
+		panel_1.add(lblBill);
+
+		lblTotalWatts = new JLabel();
+		lblTotalWatts.setFont(new Font("Tahoma", Font.BOLD, 15));
+		panel_1.add(lblTotalWatts);
 
 		JPanel panelSimulationOptions = new JPanel();
 		panelSimulationOptions.setOpaque(false);
@@ -125,6 +158,16 @@ public class DevicesContainer extends JPanel {
 		txtSimulationDays.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtSimulationDays.setHorizontalAlignment(SwingConstants.CENTER);
 		panelDaysPanel.add(txtSimulationDays);
+
+		boxSeasons = new JComboBox<String>();
+		boxSeasons.setBackground(Color.WHITE);
+		boxSeasons.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel.add(boxSeasons);
+
+		Season[] seasons = Season.values();
+		for (Season season : seasons) {
+			boxSeasons.addItem(season.getName());
+		}
 
 		btnSimulate = new JButton();
 		btnSimulate.setText("Simular");
@@ -176,7 +219,7 @@ public class DevicesContainer extends JPanel {
 		containerDevices.setLayout(new BoxLayout(containerDevices,
 				BoxLayout.Y_AXIS));
 
-		panelNoDevices = new NoDevicesPanel(controller);
+		panelNoDevices = new NoDevicesPanel(preferencesController);
 		// add(panelNoDevices, BorderLayout.CENTER);
 	}
 
@@ -200,18 +243,27 @@ public class DevicesContainer extends JPanel {
 	public void setDevices(List<Device> devices) {
 		containerDevices.removeAll();
 		this.totalWattsConsumed = 0;
+		this.totalCost = 0;
 		boolean thereAreDevices = devices != null && devices.size() > 0;
 		if (thereAreDevices) {
 			for (int i = 0; i < devices.size(); i++) {
 				Device device = devices.get(i);
+				double wattsConsumed = device.getWattsConsumed();
 				this.totalWattsConsumed += device.getWattsConsumed();
-				DeviceRowPanel deviceRowPanel = new DeviceRowPanel(null, i + 1,
-						device);
+				DeviceRowPanel deviceRowPanel = new DeviceRowPanel(
+						preferencesController, i + 1, device);
 				containerDevices.add(deviceRowPanel);
+				this.totalCost += wattsConsumed * kiloWattCost;
 			}
 			refreshWatts();
 		}
+		DecimalFormat decimalFormat = new DecimalFormat("#,###.##");
+		lblBill.setText("Costo total: $" + decimalFormat.format(this.totalCost));
 		setEmptyMode(!thereAreDevices);
+		lblTotalWatts.setText("Kilo Watts: "
+				+ decimalFormat.format(totalWattsConsumed));
+		containerDevices.setVisible(false);
+		containerDevices.setVisible(true);
 	}
 
 	private void setEmptyMode(boolean condition) {
@@ -235,6 +287,10 @@ public class DevicesContainer extends JPanel {
 				((DeviceRowPanel) component).setEnabled(enabled);
 			}
 		}
+	}
+
+	public void setKiloWattCost(double kiloWattCost) {
+		this.kiloWattCost = kiloWattCost;
 	}
 
 	public void updateProgressDays(int day) {

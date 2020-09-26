@@ -25,7 +25,8 @@ public class Controller implements ActionListener {
 	public Controller() {
 		this.catalogController = new CatalogController();
 		this.preferencesController = new PreferencesController();
-		this.mainFrame = new MainFrame(catalogController, preferencesController);
+		this.mainFrame = new MainFrame(this, catalogController,
+				preferencesController);
 		this.catalogController.setDeviceCatalog(this.mainFrame
 				.getDeviceCatalog());
 		this.preferencesController.setDevicesContainer(this.mainFrame
@@ -74,6 +75,10 @@ public class Controller implements ActionListener {
 	private void start() {
 		int simulationDays = this.mainFrame.getDevicesContainer()
 				.getSimulationDays();
+		this.selectedDevices = this.preferencesController
+				.getDevicesToSimulate();
+		Season season = this.preferencesController.getSeason();
+		mainFrame.getDevicesContainer().setKiloWattCost(kiloWattCost);
 		Controller controller = this;
 		if (simulationDays > 0) {
 			new Thread(new Runnable() {
@@ -81,7 +86,7 @@ public class Controller implements ActionListener {
 				@Override
 				public void run() {
 					mainFrame.setEnabled(false);
-					new Simulator(controller, Season.WINTER, selectedDevices,
+					new Simulator(controller, season, selectedDevices,
 							simulationDays, kiloWattCost, simulationSpeed)
 							.start();
 				}

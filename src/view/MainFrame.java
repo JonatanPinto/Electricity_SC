@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import controller.CatalogController;
+import controller.Controller;
 import controller.PreferencesController;
 import models.entities.Device;
 import view.deviceCatalog.DeviceCatalog;
@@ -23,12 +24,15 @@ public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 8456560429229699542L;
 	private CatalogController catalogController;
+	private Controller controller;
 	private PreferencesController preferencesController;
 	private DeviceCatalog deviceCatalog;
 	private DevicesContainer devicesContainer;
 
-	public MainFrame(CatalogController catalogController,
+	public MainFrame(Controller controller,
+			CatalogController catalogController,
 			PreferencesController preferencesController) {
+		this.controller = controller;
 		this.catalogController = catalogController;
 		this.preferencesController = preferencesController;
 		initProperties();
@@ -51,7 +55,8 @@ public class MainFrame extends JFrame {
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
-		this.devicesContainer = new DevicesContainer(preferencesController);
+		this.devicesContainer = new DevicesContainer(controller,
+				preferencesController);
 		tabbedPane.addTab("Simulador", null, devicesContainer, null);
 
 		this.deviceCatalog = new DeviceCatalog(catalogController);

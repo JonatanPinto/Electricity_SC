@@ -158,7 +158,7 @@ public class DeviceCatalog extends JPanel {
 																		panelExtraTitles.add(lblDay6);
 
 		JPanel panelExtraSpace = new JPanel();
-		panelExtraSpace.setPreferredSize(new Dimension(100, 10));
+		panelExtraSpace.setPreferredSize(new Dimension(120, 10));
 		panelExtraSpace.setOpaque(false);
 		panelTitles.add(panelExtraSpace, BorderLayout.EAST);
 	}

@@ -23,6 +23,8 @@ import models.entities.DeviceType;
 import models.entities.EnergyScale;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -32,12 +34,12 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JProgressBar;
 
-import controller.Controller;
+import controller.PreferencesController;
 
 public class DeviceRowPanel extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = -5578655020070513211L;
-	private Controller controller;
+	private PreferencesController controller;
 	private Device device;
 	private JLabel lblName;
 	private JLabel lblIndex;
@@ -54,12 +56,8 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 	private JLabel lblTime;
 	private JPanel panelWatts;
 
-	public DeviceRowPanel() {
-		initProperties();
-		initComponents();
-	}
-
-	public DeviceRowPanel(Controller controller, int index, Device device) {
+	public DeviceRowPanel(PreferencesController controller, int index,
+			Device device) {
 		this.controller = controller;
 		initProperties();
 		initComponents();
@@ -135,7 +133,13 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 		btnEdit.addMouseListener(this);
 		btnEdit.setFocusPainted(false);
 		btnEdit.setContentAreaFilled(false);
-		btnEdit.addActionListener(controller);
+		btnEdit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.editDevice(device);
+			}
+		});
 		btnEdit.setBorder(new EmptyBorder(5, 5, 5, 5));
 		btnEdit.setIcon(ConstantGUI.ICON_PENCIL_GRAY_16);
 		btnEdit.setBackground(Color.LIGHT_GRAY);
@@ -174,12 +178,19 @@ public class DeviceRowPanel extends JPanel implements MouseListener {
 		panelControls.add(btnEdit);
 
 		btnRemove = new JButton();
-		btnRemove.addMouseListener(this);
 		btnRemove.setFocusPainted(false);
+		btnRemove.addMouseListener(this);
 		btnRemove.setContentAreaFilled(false);
 		btnRemove.setBackground(Color.LIGHT_GRAY);
 		btnRemove.setBorder(new EmptyBorder(5, 5, 5, 5));
 		btnRemove.setIcon(ConstantGUI.ICON_TRASH_GRAY_16);
+		btnRemove.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.removeDevice(device.getId());
+			}
+		});
 		btnRemove.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {

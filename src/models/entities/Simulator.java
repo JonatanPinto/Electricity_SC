@@ -2,6 +2,7 @@ package models.entities;
 
 import java.util.List;
 
+import utilities.numbers.NumberGenerator;
 import controller.Controller;
 
 public class Simulator {
@@ -26,9 +27,10 @@ public class Simulator {
 	}
 
 	public void start() {
+		NumberGenerator numberGenerator = new NumberGenerator();
 		for (int i = 0, j = 0; i < this.simulationDays; i++, j++) {
 			for (Device device : this.devices) {
-				device.use(j, this.season);
+				device.use(j, this.season, numberGenerator);
 			}
 			if (j == 6) {
 				j = -1;

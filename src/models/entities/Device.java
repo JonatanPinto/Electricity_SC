@@ -1,6 +1,9 @@
 package models.entities;
 
 import java.util.Arrays;
+import java.util.UUID;
+
+import utilities.numbers.NumberGenerator;
 
 public class Device {
 
@@ -35,21 +38,28 @@ public class Device {
 	}
 
 	public Device clone() {
-		return new Device(id, state, deviceType, tradeMark, model, name,
-				energyScale, this.ConsumptionStandBy, this.ConsumptionOn,
-				hourOfUsePerDay);
+		return new Device(UUID.randomUUID().toString(), state, deviceType,
+				tradeMark, model, name, energyScale, this.ConsumptionStandBy,
+				this.ConsumptionOn, hourOfUsePerDay);
 	}
 
-	public void use(int day, Season season) {
+	public void use(int day, Season season, NumberGenerator numberGenerator) {
 		if (state) {
-			double useHours = hourOfUsePerDay[day];
-			if (season != null && season.equals(Season.WINTER)
-					&& season.getDeviceType().equals(this.deviceType)) {
-				useHours += useHours * season.getUsageIncreasePercentage();
+			if (numberGenerator.generateDouble(0, 1) < 0.9) {
+				double useHours = hourOfUsePerDay[day];
+				useHours = numberGenerator.generateDouble(useHours - 0.5,
+						useHours + 0.5);
+				if (useHours > 0) {
+					if (season != null && season.equals(Season.WINTER)
+							&& season.getDeviceType().equals(this.deviceType)) {
+						useHours += useHours
+								* season.getUsageIncreasePercentage();
+					}
+					this.wattsConsumed += (useHours * ConsumptionOn)
+							+ ((24 - useHours) * ConsumptionStandBy);
+					this.useTime += useHours;
+				}
 			}
-			this.wattsConsumed += (useHours * ConsumptionOn)
-					+ ((24 - useHours) * ConsumptionStandBy);
-			this.useTime += useHours;
 		}
 	}
 

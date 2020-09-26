@@ -2,19 +2,26 @@ package models.entities;
 
 public enum Season {
 
-	WINTER(DeviceType.HEAT_PRODUCER, 0.2), SUMMER(null, 0), SPRING(null, 0), FALL(
-			null, 0);
+	WINTER("Invierno", DeviceType.HEAT_PRODUCER, 0.2), SUMMER("Verano", null, 0), SPRING(
+			"Primavera", null, 0), FALL("Otoño", null, 0);
 
 	private DeviceType deviceType;
+	private String name;
 	private double usageIncreasePercentage;
 
-	private Season(DeviceType deviceType, double usageIncreasePercentage) {
+	private Season(String name, DeviceType deviceType,
+			double usageIncreasePercentage) {
 		this.deviceType = deviceType;
+		this.name = name;
 		this.usageIncreasePercentage = usageIncreasePercentage;
 	}
 
 	public DeviceType getDeviceType() {
 		return deviceType;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public double getUsageIncreasePercentage() {

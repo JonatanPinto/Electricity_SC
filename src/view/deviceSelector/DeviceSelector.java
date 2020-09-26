@@ -65,6 +65,7 @@ public class DeviceSelector extends JDialog implements ActionListener {
 		scrollPane.setOpaque(false);
 		scrollPane.setBorder(null);
 		scrollPane.getViewport().setOpaque(false);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
@@ -102,8 +103,8 @@ public class DeviceSelector extends JDialog implements ActionListener {
 		setModal(true);
 		setSize(450, 500);
 		setLocationRelativeTo(null);
-		getContentPane().setLayout(new BorderLayout());
 		setTitle("Selector de dispositivos");
+		getContentPane().setLayout(new BorderLayout());
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		setIconImage(((ImageIcon) ConstantGUI.ICON_ADD_WHITE_16).getImage());
 	}
