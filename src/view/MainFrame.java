@@ -65,8 +65,9 @@ public class MainFrame extends JFrame {
 
 	private void initProperties() {
 		setSize(1200, 700);
-		setTitle("Simulador");
+		setTitle("ELECDO");
 		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(new BorderLayout());
 		setIconImage(((ImageIcon) ConstantGUI.APP_ICON_32).getImage());
